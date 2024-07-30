@@ -33,9 +33,9 @@ class ProfileDetail(APIView):
     This view allows to retrieve a profile by its ID.
 
     Methods:
-        get_object(pk):
+        get_object(id):
             Check if profile exists and return it or raise Http404.
-        get(request, pk):
+        get(request, id):
             Get profile by ID and return it.
     """
     serializer_class = ProfileSerializer
@@ -43,9 +43,9 @@ class ProfileDetail(APIView):
 
     # Check if profile exists and return it or return 404
     # This method is only to validate the profile exists
-    def get_object(self, pk):
+    def get_object(self, id):
         try:
-            profile = Profile.objects.get(pk=pk)
+            profile = Profile.objects.get(id=id)
             self.check_object_permissions(self.request, profile)
             return profile
         except Profile.DoesNotExist:
@@ -53,31 +53,30 @@ class ProfileDetail(APIView):
 
     # Get profile by id and return it
     # If profile does exist, return it so it can be used
-    def get(self, request, pk):
+    def get(self, request, id):
         """
         Retrieve a specific profile.
 
         Args:
             request (HttpRequest): The HTTP request object.
-            pk (int): The primary key of the profile to retrieve.
+            id (int): The primary key of the profile to retrieve.
 
         Returns:
             Response: The serialized profile data.
         """
-        profile = self.get_object(pk)
+        profile = self.get_object(id)
         serializer = ProfileSerializer(
-            profile, context={'request': request}
-            )
+            profile, context={'request': request})
         return Response(serializer.data)
 
     # Update profile by id and save it
-    def put(self, request, pk):
+    def put(self, request, id):
         """
         Update an existing profile.
 
         Args:
             request (HttpRequest): The HTTP request object.
-            pk (int): The primary key of the profile to be updated.
+            id (int): The primary key of the profile to be updated.
 
         Returns:
             Response: HTTP response object containing the updated profile data.
@@ -86,7 +85,7 @@ class ProfileDetail(APIView):
             NotFound: If the profile with the given primary key does not exist.
             ValidationError: If the request data is invalid.
         """
-        profile = self.get_object(pk)
+        profile = self.get_object(id)
         serializer = ProfileSerializer(
             profile, data=request.data, context={'request': request}
             )
@@ -96,13 +95,13 @@ class ProfileDetail(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     # Delete profile by id
-    def delete(self, request, pk):
+    def delete(self, request, id):
         """
         Delete an existing profile.
 
         Args:
             request (HttpRequest): The HTTP request object.
-            pk (int): The primary key of the profile to be deleted.
+            id (int): The primary key of the profile to be deleted.
 
         Returns:
             Response: HTTP response object indicating the profile was deleted.
@@ -110,6 +109,6 @@ class ProfileDetail(APIView):
         Raises:
             NotFound: If the profile with the given primary key does not exist.
         """
-        profile = self.get_object(pk)
+        profile = self.get_object(id)
         profile.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)

@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 
     # Apps
     "profiles",
+    "categories",
 
     # Other apps
     "cloudinary",
