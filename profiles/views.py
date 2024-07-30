@@ -85,3 +85,22 @@ class ProfileDetail(APIView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # Delete profile by id
+    def delete(self, request, pk):
+        """
+        Delete an existing profile.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            pk (int): The primary key of the profile to be deleted.
+
+        Returns:
+            Response: HTTP response object indicating the profile was deleted.
+
+        Raises:
+            NotFound: If the profile with the given primary key does not exist.
+        """
+        profile = self.get_object(pk)
+        profile.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
