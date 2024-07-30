@@ -21,26 +21,26 @@ class CategoriesList(APIView):
         return Response(serializer.data)
 
 
-# Get single category by id
+# Get single category by slug
 class CategoryDetail(APIView):
     """
     A view to retrieve a specific category.
 
-    This view allows to retrieve a category by its ID.
+    This view allows to retrieve a category by its slug.
 
     Methods:
-        get_object(id):
+        get_object(slug):
             Check if category exists and return it or raise Http404.
-        get(request, id):
-            Get category by ID and return it.
+        get(request, slug):
+            Get category by slug and return it.
     """
     serializer_class = CategorySerializer
 
     # Check if category exists and return it or return 404
     # This method is only to validate the category exists
-    def get_object(self, id):
+    def get_object(self, slug):
         try:
-            category = Category.objects.get(id=id)
+            category = Category.objects.get(slug=slug)
             self.check_object_permissions(self.request, category)
             return category
         except Category.DoesNotExist:
@@ -48,7 +48,7 @@ class CategoryDetail(APIView):
 
     # Get category by id and return it
     # If category does exist, return it so it can be used
-    def get(self, request, id):
+    def get(self, request, slug):
         """
         Retrieve a specific category.
 
@@ -59,7 +59,7 @@ class CategoryDetail(APIView):
         Returns:
             Response: The serialized category data.
         """
-        category = self.get_object(id)
+        category = self.get_object(slug)
         serializer = CategorySerializer(
             category, context={'request': request}
             )
