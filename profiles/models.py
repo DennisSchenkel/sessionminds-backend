@@ -44,7 +44,7 @@ class Profile(models.Model):
                               upload_to='user-images/')
 
     def __str__(self):
-        return f'{self.user} Profile'
+        return self.user.username
 
 
 # Signal receiver to create a profile for a new user

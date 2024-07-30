@@ -4,7 +4,15 @@ from django.utils.text import slugify
 
 class Icon(models.Model):
     """
-    Create a model for icons.
+    Represents an icon.
+
+    Attributes:
+        title (str): The title of the icon.
+        icon_code (str): The code representing the icon.
+
+    Methods:
+        __str__(): Returns the title of the icon.
+
     """
     title = models.CharField(unique=True, max_length=100)
     icon_code = models.CharField(unique=True, max_length=10)
@@ -15,8 +23,17 @@ class Icon(models.Model):
 
 class Category(models.Model):
     """
-    Create a model for categories.
+    Represents a category.
+
+    Attributes:
+        title (str): The title of the category.
+        description (str): The description of the category.
+        icon (Icon): The icon associated with the category.
+        slug (str): The slug for the category.
+        created (datetime): Date and time when the category was created.
+        updated (datetime): Date and time when the category was last updated.
     """
+
     title = models.CharField(max_length=100, unique=True)
     description = models.TextField(max_length=500, blank=True)
     icon = models.ForeignKey(Icon, on_delete=models.SET_DEFAULT, default=1)
