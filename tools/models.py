@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from categories.models import Category
+from django.utils.text import slugify
 
 
 class Tool(models.Model):
@@ -13,7 +14,7 @@ class Tool(models.Model):
         full_description (str): The full description of the tool.
         categories (ManyToManyField): The categories associated with the tool.
         instructions (str): The instructions for using the tool.
-        author (ForeignKey): The author of the tool entry.
+        user (ForeignKey): The author of the tool entry.
         created (datetime): Date and time when the tool was created.
         updated (datetime): Date and time when the tool was last updated.
     """
@@ -23,13 +24,19 @@ class Tool(models.Model):
     full_description = models.TextField(max_length=500, blank=True)
     categories = models.ManyToManyField(Category, related_name="tools")
     instructions = models.TextField(max_length=5000, blank=True)
-    author = models.ForeignKey(
+    slug = models.SlugField(unique=True, null=True, blank=True)
+    owner = models.ForeignKey(
         User,
         on_delete=models.SET_DEFAULT,
-        default="Anonymous"
+        default=1,
         )
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title

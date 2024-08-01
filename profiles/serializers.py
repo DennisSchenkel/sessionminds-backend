@@ -16,9 +16,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         Returns:
             bool: True if the authenticated user is the owner, False otherwise.
         """
-        request = self.context.get("request")
-        if request is None or not request.user.is_authenticated:
-            return False
+        request = self.context["request"]
         return request.user == obj.user
 
     class Meta:

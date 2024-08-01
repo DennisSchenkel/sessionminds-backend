@@ -36,7 +36,11 @@ class Category(models.Model):
 
     title = models.CharField(max_length=100, unique=True)
     description = models.TextField(max_length=500, blank=True)
-    icon = models.ForeignKey(Icon, on_delete=models.SET_DEFAULT, default=1)
+    icon = models.ForeignKey(
+        Icon,
+        on_delete=models.SET_DEFAULT,
+        default="U+2716"
+        )
     slug = models.SlugField(unique=True, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)

@@ -38,8 +38,9 @@ class ProfileDetail(APIView):
         get(request, id):
             Get profile by ID and return it.
     """
-    serializer_class = ProfileSerializer
+
     permission_classes = [IsOwnerOrReadOnly]
+    serializer_class = ProfileSerializer
 
     # Check if profile exists and return it or return 404
     # This method is only to validate the profile exists
