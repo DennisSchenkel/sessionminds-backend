@@ -10,24 +10,25 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
-from pathlib import Path
+import environ
 import os
-
-if os.path.isfile("env.py"):
-    import env
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Initialize environment variables
+env = environ.Env()
+environ.Env.read_env()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEVELOPMENT")
+DEBUG = env.bool("DEVELOPMENT", default=False)
 
 ALLOWED_HOSTS = [
     "127.0.0.1",
@@ -98,20 +99,30 @@ WSGI_APPLICATION = "sessionminds.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": os.environ.get("DB_ENGINE"),
-        "NAME": os.environ.get("DB_NAME"),
-        "USER": os.environ.get("DB_USER"),
-        "PASSWORD": os.environ.get("DB_PASSWORD"),
-        "HOST": os.environ.get("DB_HOST"),
-        "PORT": os.environ.get("DB_PORT"),
-        "OPTIONS": {
-            "sslmode": os.environ.get("DB_SSLMODE"),
-            "options": os.environ.get("DB_OPTIONS"),
-        },
+TEST_ENV = env("test", default="0")
+
+if TEST_ENV == '1':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'test_db.sqlite3',
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": env("DB_ENGINE"),
+            "NAME": env("DB_NAME"),
+            "USER": env("DB_USER"),
+            "PASSWORD": env("DB_PASSWORD"),
+            "HOST": env("DB_HOST"),
+            "PORT": env("DB_PORT"),
+            "OPTIONS": {
+                "sslmode": env("DB_SSLMODE"),
+                "options": env("DB_OPTIONS"),
+            },
+    }
+    }
 
 
 # Password validation
@@ -159,12 +170,12 @@ STATICFILES_DIRS = [
 ]
 
 # Media files
-MEDIA_URL = '/media/'
+MEDIA_URL = "/media/"
 
 # Settings for image upload
 DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 CLOUDINARY_STORAGE = {
-    'CLOUDINARY_URL': os.environ.get('CLOUDINARY_URL')
+    "CLOUDINARY_URL": env("CLOUDINARY_URL")
 }
 
 # Default primary key field type

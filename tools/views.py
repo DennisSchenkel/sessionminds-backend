@@ -18,12 +18,26 @@ class ToolList(APIView):
         get(request):
             Retrieves all tools and returns serialized data.
     """
+    
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = ToolSerializer
+    
     def get(self, request):
         tools = Tool.objects.all()
         serializer = ToolSerializer(
             tools, many=True, context={'request': request}
             )
         return Response(serializer.data)
+
+    def post(self, request):
+        serializer = ToolSerializer(
+            data=request.data,
+            context={"request": request}
+            )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # Get a single tool
@@ -38,6 +52,11 @@ class ToolDetail(APIView):
             Retrieves a single tool and returns serialized data.
     """
 
+    permission_classes = [IsOwnerOrReadOnly]
+    serializer_class = ToolSerializer
+
+    ## Check if tool exists and return it or return 404
+    ## This method is only to validate the tool exists
     def get_object(self, slug):
         try:
             tool = Tool.objects.get(slug=slug)
@@ -46,6 +65,8 @@ class ToolDetail(APIView):
         except Tool.DoesNotExist:
             raise Http404
 
+    ## Get tool by slug and return it
+    ## If tool does exist, return it so it can be used
     def get(self, request, slug):
         tool = self.get_object(slug)
         serializer = ToolSerializer(
@@ -53,68 +74,7 @@ class ToolDetail(APIView):
             )
         return Response(serializer.data)
 
-
-class ToolCreate(APIView):
-    """
-    A view for creating a tool.
-
-    Inherits from APIView class.
-
-    Methods:
-        get(request):
-            Retrieve the serialized data for creating a new tool.
-
-        post(request):
-            Create a new tool and return serialized data.
-
-    Attributes:
-        permission_classes (list): A list of permission classes for the view.
-        serializer_class (class): The serializer class for the view.
-    """
-
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    serializer_class = ToolSerializer
-
-    def post(self, request):
-        serializer = ToolSerializer(
-            data=request.data,
-            context={"request": request}
-            )
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class ToolUpdate(APIView):
-    """
-    Update a tool and return serialized data.
-
-    Args:
-        request (HttpRequest): The HTTP request object.
-        id (int): The ID of the tool to be updated.
-
-    Returns:
-        Response:
-            The HTTP response object containing
-            the serialized data of the updated tool.
-
-    Raises:
-        Tool.DoesNotExist:
-            If the tool with the given ID does not exist.
-    """
-
-    permission_classes = [IsOwnerOrReadOnly]
-    serializer_class = ToolSerializer
-
-    def get_object(self, id):
-        try:
-            tool = Tool.objects.get(id=id)
-            self.check_object_permissions(self.request, tool)
-            return tool
-        except Tool.DoesNotExist:
-            raise Http404
-
+    ## Update tool by slug
     def put(self, request, id):
         tool = self.get_object(id)
         serializer = ToolSerializer(
@@ -124,5 +84,11 @@ class ToolUpdate(APIView):
             )
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    ## Delete tool by slug
+    def delete(self, request, id):
+        tool = self.get_object(id)
+        tool.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

@@ -14,6 +14,7 @@ class Icon(models.Model):
         __str__(): Returns the title of the icon.
 
     """
+    id = models.AutoField(primary_key=True)
     title = models.CharField(unique=True, max_length=100)
     icon_code = models.CharField(unique=True, max_length=10)
 
@@ -38,8 +39,10 @@ class Category(models.Model):
     description = models.TextField(max_length=500, blank=True)
     icon = models.ForeignKey(
         Icon,
-        on_delete=models.SET_DEFAULT,
-        default="U+2716"
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        default=None
         )
     slug = models.SlugField(unique=True, null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True)

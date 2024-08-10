@@ -19,6 +19,17 @@ class ProfileSerializer(serializers.ModelSerializer):
         request = self.context["request"]
         return request.user == obj.user
 
+    def validate_image(self, value):
+        if value.size > 2 * 1024 * 1024:
+            raise serializers.ValidationError("Image file is too large! ( max 2mb )")
+        if value.image.width < 300 or value.image.height < 300:
+            raise serializers.ValidationError("Image file is too small! ( min 300x300 pixels )")
+        if value.image.width > 4096 or value.image.height > 4096:
+            raise serializers.ValidationError("Image file is too large! ( max 4096x4096 pixels )")
+        if value.file.content_type not in ["image/jpeg", "image/png"]:
+            raise serializers.ValidationError("Image file is not a valid format! ( jpeg, png )")
+        
+
     class Meta:
         model = Profile
         fields = [

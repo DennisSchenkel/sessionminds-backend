@@ -3,7 +3,7 @@ from .models import Tool
 
 
 class ToolSerializer(serializers.ModelSerializer):
-    owner = serializers.ReadOnlyField(source="owner.username")
+    user = serializers.ReadOnlyField(source="user.username")
     is_owner = serializers.SerializerMethodField()
 
     def get_is_owner(self, obj):
@@ -17,13 +17,13 @@ class ToolSerializer(serializers.ModelSerializer):
             bool: True if the authenticated user is the owner.
         """
         request = self.context["request"]
-        return request.user == obj.owner
+        return request.user == obj.user
 
     class Meta:
         model = Tool
         fields = [
             "id",
-            "owner",
+            "user",
             "title",
             "short_description",
             "full_description",

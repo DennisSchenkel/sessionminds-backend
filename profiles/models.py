@@ -47,30 +47,30 @@ class Profile(models.Model):
         return self.user.username
 
 
-# Signal receiver to create a profile for a new user
-def create_profile(sender, instance, created, **kwargs):
-    """
-    Create a profile for a newly created user.
+    # Signal receiver to create a profile for a new user
+    def create_profile(sender, instance, created, **kwargs):
+        """
+        Create a profile for a newly created user.
 
-    This function is a signal receiver that gets triggered
-    when a new user is created.
-    It creates a profile for the user by calling
-    the `create` method of the `Profile` model.
+        This function is a signal receiver that gets triggered
+        when a new user is created.
+        It creates a profile for the user by calling
+        the `create` method of the `Profile` model.
 
-    Args:
-        sender (Type):
-            The class of the sender.
-        instance (object):
-            The instance of the sender class that triggered the signal.
-        created (bool):
-            A boolean indicating whether the user was just created.
+        Args:
+            sender (Type):
+                The class of the sender.
+            instance (object):
+                The instance of the sender class that triggered the signal.
+            created (bool):
+                A boolean indicating whether the user was just created.
 
-    Returns:
-        None
-    """
-    if created:
-        Profile.objects.create(user=instance)
+        Returns:
+            None
+        """
+        if created:
+            Profile.objects.create(user=instance)
 
 
-# Connect the signal receiver to the User model
-post_save.connect(create_profile, sender=User)
+    # Connect the signal receiver to the User model
+    post_save.connect(create_profile, sender=User)

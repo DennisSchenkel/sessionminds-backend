@@ -25,7 +25,7 @@ class Tool(models.Model):
     categories = models.ManyToManyField(Category, related_name="tools")
     instructions = models.TextField(max_length=5000, blank=True)
     slug = models.SlugField(unique=True, null=True, blank=True)
-    owner = models.ForeignKey(
+    user = models.ForeignKey(
         User,
         on_delete=models.SET_DEFAULT,
         default=1,

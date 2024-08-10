@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import Profile
 from .serializers import ProfileSerializer
-from sessionminds.permissions import IsOwnerOrReadOnly
+from sessionminds.permissions import IsOwnerOrReadOnly, AllowAny
 
 
 # Get all profiles
