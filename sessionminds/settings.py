@@ -202,14 +202,24 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication"
         if "DEV" in os.environ
         else "dj_rest_auth.jwt_auth.JWTCookieAuthentication"
-    )]
-}
-
-REST_AUTH_SERIALIZERS = {
-    "USER_DETAILS_SERIALIZER": "sessionminds.serializers.CurrenUserSerializer"
+    )],
+    "DEFAULT_PAGINATION_CLASS":
+        "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 20,
+    "DATETIME_FORMAT": "%d/%b/%Y",
 }
 
 REST_USE_JWT = True
 JWT_AUTH_SECURE = True
 JWT_AUTH_COOKIE = "sessionminds_jwt"
 JWT_AUTH_REFRESH_COOKIE = "sessionminds_jwt_refresh"
+JWT_AUTH_SAMESITE = "None"
+
+REST_AUTH_SERIALIZERS = {
+    "USER_DETAILS_SERIALIZER": "sessionminds.serializers.CurrenUserSerializer"
+}
+if "DEV" in os.environ:
+    REST_FRAMEWORK["DEFAULT_RENDERER_CLASS"] = [
+        "rest_framework.renderers.JSONRenderer"
+    ]
+
