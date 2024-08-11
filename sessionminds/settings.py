@@ -101,6 +101,8 @@ WSGI_APPLICATION = "sessionminds.wsgi.application"
 
 TEST_ENV = env("test", default="0")
 
+# If test environment is set to 1, use sqlite3 database
+# If set to 0, use the postgresql database
 if TEST_ENV == '1':
     DATABASES = {
         'default': {

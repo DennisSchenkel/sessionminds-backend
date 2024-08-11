@@ -75,8 +75,8 @@ class ToolDetail(APIView):
         return Response(serializer.data)
 
     ## Update tool by slug
-    def put(self, request, id):
-        tool = self.get_object(id)
+    def put(self, request, slug):
+        tool = self.get_object(slug)
         serializer = ToolSerializer(
             tool,
             data=request.data,
@@ -88,7 +88,7 @@ class ToolDetail(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     ## Delete tool by slug
-    def delete(self, request, id):
-        tool = self.get_object(id)
+    def delete(self, request, slug):
+        tool = self.get_object(slug)
         tool.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
