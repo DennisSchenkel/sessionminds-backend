@@ -223,3 +223,4 @@ if "DEV" in os.environ:
         "rest_framework.renderers.JSONRenderer"
     ]
 
+ACCOUNT_EMAIL_VERIFICATION = 'none'
