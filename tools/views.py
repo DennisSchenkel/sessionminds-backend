@@ -18,10 +18,10 @@ class ToolList(APIView):
         get(request):
             Retrieves all tools and returns serialized data.
     """
-    
+
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = ToolSerializer
-    
+
     def get(self, request):
         tools = Tool.objects.all()
         serializer = ToolSerializer(
@@ -55,8 +55,8 @@ class ToolDetail(APIView):
     permission_classes = [IsOwnerOrReadOnly]
     serializer_class = ToolSerializer
 
-    ## Check if tool exists and return it or return 404
-    ## This method is only to validate the tool exists
+    # Check if tool exists and return it or return 404
+    # This method is only to validate the tool exists
     def get_object(self, slug):
         try:
             tool = Tool.objects.get(slug=slug)
@@ -65,8 +65,8 @@ class ToolDetail(APIView):
         except Tool.DoesNotExist:
             raise Http404
 
-    ## Get tool by slug and return it
-    ## If tool does exist, return it so it can be used
+    # Get tool by slug and return it
+    # If tool does exist, return it so it can be used
     def get(self, request, slug):
         tool = self.get_object(slug)
         serializer = ToolSerializer(
@@ -74,7 +74,7 @@ class ToolDetail(APIView):
             )
         return Response(serializer.data)
 
-    ## Update tool by slug
+    # Update tool by slug
     def put(self, request, slug):
         tool = self.get_object(slug)
         serializer = ToolSerializer(
@@ -87,7 +87,7 @@ class ToolDetail(APIView):
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    ## Delete tool by slug
+    # Delete tool by slug
     def delete(self, request, slug):
         tool = self.get_object(slug)
         tool.delete()

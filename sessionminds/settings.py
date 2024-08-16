@@ -27,7 +27,7 @@ else:
 # Test environment variable
 TEST = False
 
-if TEST == True:
+if TEST is True:
     print("WARNING: TEST mode is ON")
 else:
     print("TEST mode is off")
@@ -43,6 +43,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://sessionminds-fe-0b8daceb91f0.herokuapp.com",
 ]
 
+CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
 
@@ -54,6 +55,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
+    "django_summernote",
     "corsheaders",
     "rest_framework",
     "rest_framework.authtoken",
@@ -116,7 +118,7 @@ WSGI_APPLICATION = "sessionminds.wsgi.application"
 
 # If test environment is set to 1, use sqlite3 database
 # If set to 0, use the postgresql database
-if TEST == True:
+if TEST is True:
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
@@ -136,7 +138,7 @@ else:
                 "sslmode": env("DB_SSLMODE"),
                 "options": env("DB_OPTIONS"),
             },
-    }
+        }
     }
 
 

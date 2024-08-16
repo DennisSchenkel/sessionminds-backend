@@ -1,10 +1,18 @@
 from django.http import Http404
+from django.contrib.auth.models import User
+from django.shortcuts import get_object_or_404
 from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
+from rest_framework.permissions import IsAuthenticated
 from .models import Profile
-from .serializers import ProfileSerializer, RegistrationSerializer, LoginSerializer
+from .serializers import (
+    ProfileSerializer,
+    UserSerializer,
+    RegistrationSerializer,
+    LoginSerializer
+)
 from sessionminds.permissions import IsOwnerOrReadOnly
 
 
@@ -26,7 +34,7 @@ class ProfileList(APIView):
         return Response(serializer.data)
 
 
-# Get single profile by id
+# Get single profile by profile id
 class ProfileDetail(APIView):
     """
     A view to retrieve a specific profile.
@@ -116,6 +124,75 @@ class ProfileDetail(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+# Get single profile by user id
+class UserProfileView(APIView):
+    def get(self, request, user_id):
+        user = get_object_or_404(User, id=user_id)
+        profile = get_object_or_404(Profile, user=user)
+        serializer = ProfileSerializer(profile, context={'request': request})
+        return Response(serializer.data)
+
+
+# Get a list of all users
+class UsersListView(APIView):
+    permission_classes = [IsOwnerOrReadOnly]
+
+    def get(self, request):
+        users = User.objects.all()
+        serializer = UserSerializer(users, many=True)
+        return Response(serializer.data)
+
+
+# get a sinhle user by user id
+class UserDetailView(APIView):
+    permission_classes = [IsOwnerOrReadOnly]
+
+    def get(self, request, id):
+        try:
+            user = User.objects.get(id=id)
+        except User.DoesNotExist:
+            return Response(
+                {"error": "User not found"},
+                status=status.HTTP_404_NOT_FOUND
+                )
+
+        serializer = UserSerializer(user)
+        return Response(serializer.data)
+
+
+# Update user account
+class UserUpdateView(APIView):
+    def put(self, request, user_id):
+        user = get_object_or_404(User, id=user_id)
+        serializer = UserSerializer(user, data=request.data, partial=True)
+        if serializer.is_valid():
+            if 'email' in serializer.validated_data:
+                serializer.validated_data['email'] = serializer.validated_data[
+                    'email'
+                    ].lower()
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserDeleteView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, user_id):
+        user = get_object_or_404(User, id=user_id)
+
+        if request.user != user:
+            return Response(
+                {"You are not allowed to delete this profile!"},
+                status=status.HTTP_403_FORBIDDEN
+                )
+
+        # Benutzer löschen
+        user.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+# Register new user
 class RegistrationView(generics.CreateAPIView):
     serializer_class = RegistrationSerializer
 
@@ -125,9 +202,12 @@ class RegistrationView(generics.CreateAPIView):
         user = serializer.save()
         return Response({
             "user": serializer.data,
+            "user_id": user.id,
+            "email": user.email
         }, status=status.HTTP_201_CREATED)
-      
 
+
+# Login user
 class LoginView(generics.GenericAPIView):
     serializer_class = LoginSerializer
 
@@ -138,7 +218,7 @@ class LoginView(generics.GenericAPIView):
 
         # Create token for user
         token, created = Token.objects.get_or_create(user=user)
-        
+
         return Response({
             "token": token.key,
             "user_id": user.id,

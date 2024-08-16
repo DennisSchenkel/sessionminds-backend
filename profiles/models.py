@@ -46,7 +46,6 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
-
     # Signal receiver to create a profile for a new user
     def create_profile(sender, instance, created, **kwargs):
         """
@@ -70,7 +69,6 @@ class Profile(models.Model):
         """
         if created:
             Profile.objects.create(user=instance)
-
 
     # Connect the signal receiver to the User model
     post_save.connect(create_profile, sender=User)

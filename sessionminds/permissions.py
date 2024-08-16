@@ -15,12 +15,3 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
         # Write permissions are only allowed to the owner of the profile.
         return obj.user == request.user
-
-
-class AllowAny(permissions.BasePermission):
-    """
-    Custom permission to allow any request.
-    """
-
-    def has_permission(self, request, view):
-        return True
