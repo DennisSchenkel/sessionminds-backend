@@ -4,8 +4,8 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.authtoken.models import Token
 from rest_framework.permissions import IsAuthenticated
+from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Profile
 from .serializers import (
     ProfileSerializer,
@@ -29,7 +29,7 @@ class ProfileList(APIView):
     def get(self, request):
         profiles = Profile.objects.all()
         serializer = ProfileSerializer(
-            profiles, many=True, context={'request': request}
+            profiles, many=True, context={"request": request}
             )
         return Response(serializer.data)
 
@@ -76,7 +76,7 @@ class ProfileDetail(APIView):
         """
         profile = self.get_object(id)
         serializer = ProfileSerializer(
-            profile, context={'request': request})
+            profile, context={"request": request})
         return Response(serializer.data)
 
     # Update profile by id and save it
@@ -97,7 +97,7 @@ class ProfileDetail(APIView):
         """
         profile = self.get_object(id)
         serializer = ProfileSerializer(
-            profile, data=request.data, context={'request': request}
+            profile, data=request.data, context={"request": request}
             )
         if serializer.is_valid():
             serializer.save()
@@ -129,7 +129,7 @@ class UserProfileView(APIView):
     def get(self, request, user_id):
         user = get_object_or_404(User, id=user_id)
         profile = get_object_or_404(Profile, user=user)
-        serializer = ProfileSerializer(profile, context={'request': request})
+        serializer = ProfileSerializer(profile, context={"request": request})
         return Response(serializer.data)
 
 
@@ -143,7 +143,7 @@ class UsersListView(APIView):
         return Response(serializer.data)
 
 
-# get a sinhle user by user id
+# Get a single user by user id
 class UserDetailView(APIView):
     permission_classes = [IsOwnerOrReadOnly]
 
@@ -166,9 +166,9 @@ class UserUpdateView(APIView):
         user = get_object_or_404(User, id=user_id)
         serializer = UserSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
-            if 'email' in serializer.validated_data:
-                serializer.validated_data['email'] = serializer.validated_data[
-                    'email'
+            if "email" in serializer.validated_data:
+                serializer.validated_data["email"] = serializer.validated_data[
+                    "email"
                     ].lower()
             serializer.save()
             return Response(serializer.data)
@@ -214,13 +214,13 @@ class LoginView(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
+        user = serializer.validated_data["user"]
 
-        # Create token for user
-        token, created = Token.objects.get_or_create(user=user)
-
+        # Erzeuge JWT Tokens
+        refresh = RefreshToken.for_user(user)
         return Response({
-            "token": token.key,
+            "access": str(refresh.access_token),
+            "refresh": str(refresh),
             "user_id": user.id,
             "email": user.email
         }, status=status.HTTP_200_OK)

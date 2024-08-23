@@ -1,6 +1,7 @@
 import environ
 import os
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -17,15 +18,14 @@ SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)
-TEST = False
+
+# Test environment variable
+TEST = True
 
 if DEBUG:
     print("WARNING: DEBUG mode is ON")
 else:
     print("DEBUG mode is off")
-
-# Test environment variable
-TEST = False
 
 if TEST is True:
     print("WARNING: TEST mode is ON")
@@ -40,6 +40,7 @@ ALLOWED_HOSTS = [
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "http://127.0.0.1:9000",
     "https://sessionminds-fe-0b8daceb91f0.herokuapp.com",
 ]
 
@@ -59,6 +60,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "rest_framework",
     "rest_framework.authtoken",
+    "rest_framework_simplejwt",
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "allauth",
@@ -201,29 +203,43 @@ CLOUDINARY_STORAGE = {
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": [(
-        "rest_framework.authentication.SessionAuthentication"
-        if "DEV" in os.environ
-        else "dj_rest_auth.jwt_auth.JWTCookieAuthentication"
-    )],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
+    ],
     "DEFAULT_PAGINATION_CLASS":
         "rest_framework.pagination.PageNumberPagination",
     "PAGE_SIZE": 20,
     "DATETIME_FORMAT": "%d/%b/%Y",
 }
 
-REST_USE_JWT = True
-JWT_AUTH_SECURE = True
 JWT_AUTH_COOKIE = "sessionminds_jwt"
 JWT_AUTH_REFRESH_COOKIE = "sessionminds_jwt_refresh"
 JWT_AUTH_SAMESITE = "None"
+JWT_AUTH_SECURE = True
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
+    "UPDATE_LAST_LOGIN": False,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "VERIFYING_KEY": None,
+    "AUDIENCE": None,
+    "ISSUER": None,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+}
 
 REST_AUTH_SERIALIZERS = {
     "USER_DETAILS_SERIALIZER": "sessionminds.serializers.CurrenUserSerializer"
 }
+
 if "DEV" in os.environ:
     REST_FRAMEWORK["DEFAULT_RENDERER_CLASS"] = [
         "rest_framework.renderers.JSONRenderer"
     ]
 
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = "none"

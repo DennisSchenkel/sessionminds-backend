@@ -73,12 +73,12 @@ class UserSerializer(serializers.ModelSerializer):
             ]
 
     def update(self, instance, validated_data):
-        email = validated_data.get('email', instance.email).lower()
-        username = validated_data.get('username', instance.username).lower()
+        email = validated_data.get("email", instance.email).lower()
+        username = validated_data.get("username", instance.username).lower()
         instance.username = username
         instance.email = email
-        if 'password' in validated_data:
-            instance.set_password(validated_data['password'])
+        if "password" in validated_data:
+            instance.set_password(validated_data["password"])
         instance.save()
         return instance
 
@@ -103,7 +103,7 @@ class RegistrationSerializer(serializers.ModelSerializer):
         validated_data.pop("passwordConf")
         user = User.objects.create_user(
             username=validated_data["email"],
-            email=validated_data['email'].lower(),
+            email=validated_data["email"].lower(),
             password=validated_data["password"]
         )
         return user
@@ -126,7 +126,7 @@ class LoginSerializer(serializers.Serializer):
                     )
         else:
             raise serializers.ValidationError(
-                "Both 'email' and 'password' are required."
+                'Both "email" and "password" are required.'
                 )
 
         data["user"] = user

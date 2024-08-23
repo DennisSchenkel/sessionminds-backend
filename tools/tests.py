@@ -8,7 +8,10 @@ from rest_framework.test import APITestCase
 class ToolsListViewTest(APITestCase):
 
     def setUp(self):
-        User.objects.create_user(username="TestUser", password="1234Test")
+        User.objects.create_user(
+            username="TestUser",
+            password="TestUser1234!!"
+            )
         print("User created")
         Category.objects.create(title="Test Category")
         print("Category created")
@@ -31,7 +34,7 @@ class ToolsListViewTest(APITestCase):
 
     # Test to create a tool
     def test_create_tool(self):
-        self.client.login(username="TestUser", password="1234Test")
+        self.client.login(username="TestUser", password="TestUser1234!!")
         user = User.objects.get(username="TestUser")
         response = self.client.post("/tools/", {
             "title": "Test Tool",
@@ -60,7 +63,7 @@ class ToolsListViewTest(APITestCase):
             "user": 1
             }
         )
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         print("User is not logged in and cannot create a tool")
 
 
@@ -69,7 +72,7 @@ class ToolsDetailViewTest(APITestCase):
     def setUp(self):
         self.user = User.objects.create_user(
             username="TestUser",
-            password="1234Test"
+            password="TestUser1234!!"
             )
         print("User created")
         self.category = Category.objects.create(title="Test Category")
@@ -92,7 +95,7 @@ class ToolsDetailViewTest(APITestCase):
 
     # Test to update a tool
     def test_update_tool(self):
-        self.client.login(username="TestUser", password="1234Test")
+        self.client.login(username="TestUser", password="TestUser1234!!")
 
         response = self.client.put(f"/tools/tool/{self.tool.slug}/", {
             "title": "Test Tool",
@@ -114,15 +117,18 @@ class ToolsDetailViewTest(APITestCase):
 
     # Test to delete a tool
     def test_delete_tool(self):
-        self.client.login(username="TestUser", password="1234Test")
+        self.client.login(username="TestUser", password="TestUser1234!!")
         response = self.client.delete(f"/tools/tool/{self.tool.slug}/")
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         print("User can delete a tool")
 
     # Test to update a tool without being owner
     def test_update_tool_not_owner(self):
-        User.objects.create_user(username="TestUser2", password="1234Test")
-        self.client.login(username="TestUser2", password="1234Test")
+        User.objects.create_user(
+            username="TestUser2",
+            password="TestUser1234!!"
+            )
+        self.client.login(username="TestUser2", password="TestUser1234!!")
         response = self.client.put(f"/tools/tool/{self.tool.slug}/", {
             "title": "Test Tool",
             "short_description": "This is a new test tool",
@@ -135,8 +141,11 @@ class ToolsDetailViewTest(APITestCase):
 
     # Test to delete a tool without being owner
     def test_delete_tool_not_owner(self):
-        User.objects.create_user(username="TestUser2", password="1234Test")
-        self.client.login(username="TestUser2", password="1234Test")
+        User.objects.create_user(
+            username="TestUser2",
+            password="TestUser1234!!"
+            )
+        self.client.login(username="TestUser2", password="TestUser1234!!")
         response = self.client.delete(f"/tools/tool/{self.tool.slug}/")
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         print("User is not the owner and cannot delete a tool")
