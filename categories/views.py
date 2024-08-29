@@ -1,7 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import Http404
-from .serializers import CategorySerializer
+from .serializers import CategorySerializer, IconSerializer
 from .models import Category, Icon
 
 
@@ -86,14 +86,8 @@ class CategoryDetailById(APIView):
 
 
 class IconsList(APIView):
-    """
-    A view for retrieving a list of icons.
 
-    Inherits from APIView class.
-
-    Methods:
-        get(request): Retrieves all icons and returns serialized data.
-    """
     def get(self, request):
         icons = Icon.objects.all()
-        return Response(icons)
+        serializer = IconSerializer(icons, many=True)
+        return Response(serializer.data)
