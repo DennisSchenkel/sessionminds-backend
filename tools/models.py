@@ -20,9 +20,9 @@ class Tool(models.Model):
     """
 
     title = models.CharField(max_length=100, unique=True)
-    short_description = models.TextField(max_length=100, blank=True)
+    short_description = models.TextField(max_length=50, blank=True)
     full_description = models.TextField(max_length=500, blank=True)
-    categories = models.ManyToManyField(Category, related_name="tools")
+    category = models.ManyToManyField(Category, related_name="tools")
     instructions = models.TextField(max_length=5000, blank=True)
     slug = models.SlugField(unique=True, null=True, blank=True)
     user = models.ForeignKey(

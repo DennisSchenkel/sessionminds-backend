@@ -5,7 +5,7 @@ from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from .models import Profile
 from .serializers import (
     ProfileSerializer,
@@ -13,6 +13,7 @@ from .serializers import (
     RegistrationSerializer,
     LoginSerializer
 )
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from sessionminds.permissions import IsOwnerOrReadOnly
 
 
@@ -216,11 +217,59 @@ class LoginView(generics.GenericAPIView):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
 
-        # Erzeuge JWT Tokens
+        # Create JWT Tokens
         refresh = RefreshToken.for_user(user)
+        access_token = str(refresh.access_token)
+        refresh_token = str(refresh)
+
         return Response({
-            "access": str(refresh.access_token),
-            "refresh": str(refresh),
+            "accessToken": access_token,
+            "refreshToken": refresh_token,
             "user_id": user.id,
             "email": user.email
         }, status=status.HTTP_200_OK)
+
+
+class LogoutView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        # Blacklist the access token
+        access_token = request.headers.get('Authorization', '').split(' ')[-1]
+        if access_token:
+            try:
+                token = AccessToken(access_token)
+                token.blacklist()
+            except Exception as e:
+                return Response(
+                    {"error": str(e)},
+                    status=status.HTTP_400_BAD_REQUEST
+                    )
+
+        # Blacklist the refresh token
+        refresh_token = request.data.get("refreshToken")
+        if refresh_token:
+            try:
+                token = RefreshToken(refresh_token)
+                token.blacklist()
+            except Exception as e:
+                return Response(
+                    {"error": str(e)},
+                    status=status.HTTP_400_BAD_REQUEST
+                    )
+
+        return Response(
+            {"message": "Logged out successfully"},
+            status=status.HTTP_200_OK
+        )
+
+
+# Protected view for testing token expiration
+class ProtectedView(APIView):
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        return Response({
+            "message": "You have access to this protected endpoint!"
+        })

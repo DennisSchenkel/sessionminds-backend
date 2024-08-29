@@ -1,10 +1,12 @@
 from rest_framework import serializers
 from .models import Tool
+from categories.serializers import CategorySerializer
 
 
 class ToolSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source="user.username")
     is_owner = serializers.SerializerMethodField()
+    category = CategorySerializer(many=True, read_only=True)
 
     def get_is_owner(self, obj):
         """
@@ -27,7 +29,7 @@ class ToolSerializer(serializers.ModelSerializer):
             "title",
             "short_description",
             "full_description",
-            "categories",
+            "category",
             "instructions",
             "slug",
             "created",

@@ -72,3 +72,11 @@ class Profile(models.Model):
 
     # Connect the signal receiver to the User model
     post_save.connect(create_profile, sender=User)
+
+
+class BlacklistedToken(models.Model):
+    token = models.TextField(max_length=500, unique=True)
+    blacklisted_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.token

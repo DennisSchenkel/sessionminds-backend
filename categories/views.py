@@ -46,7 +46,7 @@ class CategoryDetail(APIView):
         except Category.DoesNotExist:
             raise Http404
 
-    # Get category by id and return it
+    # Get category by slug and return it
     # If category does exist, return it so it can be used
     def get(self, request, slug):
         """
@@ -60,6 +60,25 @@ class CategoryDetail(APIView):
             Response: The serialized category data.
         """
         category = self.get_object(slug)
+        serializer = CategorySerializer(
+            category, context={'request': request}
+            )
+        return Response(serializer.data)
+
+
+class CategoryDetailById(APIView):
+    serializer_class = CategorySerializer
+
+    def get_object(self, id):
+        try:
+            category = Category.objects.get(id=id)
+            self.check_object_permissions(self.request, category)
+            return category
+        except Category.DoesNotExist:
+            raise Http404
+
+    def get(self, request, id):
+        category = self.get_object(id)
         serializer = CategorySerializer(
             category, context={'request': request}
             )

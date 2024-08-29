@@ -20,7 +20,7 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = env.bool("DEBUG", default=False)
 
 # Test environment variable
-TEST = True
+TEST = False
 
 if DEBUG:
     print("WARNING: DEBUG mode is ON")
@@ -37,14 +37,6 @@ ALLOWED_HOSTS = [
     ".herokuapp.com",
 ]
 
-# CORS settings
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:9000",
-    "https://sessionminds-fe-0b8daceb91f0.herokuapp.com",
-]
-
-CORS_ALLOW_CREDENTIALS = True
 
 # Application definition
 
@@ -61,6 +53,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework.authtoken",
     "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "allauth",
@@ -113,6 +106,12 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "sessionminds.wsgi.application"
 
+# CORS settings
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:9000",
+    "https://sessionminds-fe-0b8daceb91f0.herokuapp.com",
+]
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -172,7 +171,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = 'Europe/Berlin'
 
 USE_I18N = True
 
@@ -214,23 +213,17 @@ REST_FRAMEWORK = {
     "DATETIME_FORMAT": "%d/%b/%Y",
 }
 
-JWT_AUTH_COOKIE = "sessionminds_jwt"
-JWT_AUTH_REFRESH_COOKIE = "sessionminds_jwt_refresh"
-JWT_AUTH_SAMESITE = "None"
-JWT_AUTH_SECURE = True
-
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-    "ROTATE_REFRESH_TOKENS": True,
-    "BLACKLIST_AFTER_ROTATION": True,
-    "UPDATE_LAST_LOGIN": False,
-    "ALGORITHM": "HS256",
-    "SIGNING_KEY": SECRET_KEY,
-    "VERIFYING_KEY": None,
-    "AUDIENCE": None,
-    "ISSUER": None,
-    "AUTH_HEADER_TYPES": ("Bearer",),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'BLACKLIST_AFTER_ROTATION': True,
+    'ROTATE_REFRESH_TOKENS': True,
+    'UPDATE_LAST_LOGIN': True,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': SECRET_KEY,
+    'VERIFYING_KEY': None,
+    'AUTH_HEADER_TYPES': ('Bearer',),
+    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
 }
 
 REST_AUTH_SERIALIZERS = {
