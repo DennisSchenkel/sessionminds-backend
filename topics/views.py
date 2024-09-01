@@ -1,12 +1,12 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.http import Http404
-from .serializers import CategorySerializer, IconSerializer
-from .models import Category, Icon
+from .serializers import TopicSerializer, IconSerializer
+from .models import Topic, Icon
 
 
 # Get all categories
-class CategoriesList(APIView):
+class TopicsList(APIView):
     """
     A view for retrieving a list of categories.
 
@@ -16,13 +16,13 @@ class CategoriesList(APIView):
         get(request): Retrieves all categories and returns serialized data.
     """
     def get(self, request):
-        categories = Category.objects.all()
-        serializer = CategorySerializer(categories, many=True)
+        topics = Topic.objects.all()
+        serializer = TopicSerializer(topics, many=True)
         return Response(serializer.data)
 
 
 # Get single category by slug
-class CategoryDetail(APIView):
+class TopicDetail(APIView):
     """
     A view to retrieve a specific category.
 
@@ -34,16 +34,16 @@ class CategoryDetail(APIView):
         get(request, slug):
             Get category by slug and return it.
     """
-    serializer_class = CategorySerializer
+    serializer_class = TopicSerializer
 
     # Check if category exists and return it or return 404
     # This method is only to validate the category exists
     def get_object(self, slug):
         try:
-            category = Category.objects.get(slug=slug)
-            self.check_object_permissions(self.request, category)
-            return category
-        except Category.DoesNotExist:
+            topic = Topic.objects.get(slug=slug)
+            self.check_object_permissions(self.request, topic)
+            return topic
+        except Topic.DoesNotExist:
             raise Http404
 
     # Get category by slug and return it
@@ -59,28 +59,28 @@ class CategoryDetail(APIView):
         Returns:
             Response: The serialized category data.
         """
-        category = self.get_object(slug)
-        serializer = CategorySerializer(
-            category, context={'request': request}
+        topic = self.get_object(slug)
+        serializer = TopicSerializer(
+            topic, context={'request': request}
             )
         return Response(serializer.data)
 
 
-class CategoryDetailById(APIView):
-    serializer_class = CategorySerializer
+class TopicDetailById(APIView):
+    serializer_class = TopicSerializer
 
     def get_object(self, id):
         try:
-            category = Category.objects.get(id=id)
-            self.check_object_permissions(self.request, category)
-            return category
-        except Category.DoesNotExist:
+            topic = Topic.objects.get(id=id)
+            self.check_object_permissions(self.request, topic)
+            return topic
+        except Topic.DoesNotExist:
             raise Http404
 
     def get(self, request, id):
-        category = self.get_object(id)
-        serializer = CategorySerializer(
-            category, context={'request': request}
+        topic = self.get_object(id)
+        serializer = TopicSerializer(
+            topic, context={'request': request}
             )
         return Response(serializer.data)
 

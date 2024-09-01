@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from .models import Tool
-from categories.models import Category
+from topics.models import Topic
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -13,8 +13,8 @@ class ToolsListViewTest(APITestCase):
             password="TestUser1234!!"
             )
         print("User created")
-        Category.objects.create(title="Test Category")
-        print("Category created")
+        Topic.objects.create(title="Test Topic")
+        print("Topic created")
 
     # Test to get all tools from the database and list them
     def test_get_all_tools(self):
@@ -41,7 +41,7 @@ class ToolsListViewTest(APITestCase):
             "short_description": "This is a test tool",
             "full_description": "This is a test tool",
             "instructions": "This is a test tool",
-            "categories": [1],
+            "topics": [1],
             "user": user
             }
         )
@@ -59,7 +59,7 @@ class ToolsListViewTest(APITestCase):
             "short_description": "This is a test tool",
             "full_description": "This is a test tool",
             "instructions": "This is a test tool",
-            "categories": [1],
+            "topics": [1],
             "user": 1
             }
         )
@@ -75,8 +75,8 @@ class ToolsDetailViewTest(APITestCase):
             password="TestUser1234!!"
             )
         print("User created")
-        self.category = Category.objects.create(title="Test Category")
-        print("Category created")
+        self.topic = Topic.objects.create(title="Test Topic")
+        print("Topic created")
         self.tool = Tool.objects.create(
             title="Test Tool",
             short_description="This is a old test tool",
@@ -102,7 +102,7 @@ class ToolsDetailViewTest(APITestCase):
             "short_description": "This is a new test tool",
             "full_description": "This is a new test tool",
             "instructions": "This is a new test tool",
-            "categories": [self.category.id]
+            "topics": [self.topic.id]
         }, format='json')
 
         self.tool.refresh_from_db()
@@ -134,7 +134,7 @@ class ToolsDetailViewTest(APITestCase):
             "short_description": "This is a new test tool",
             "full_description": "This is a new test tool",
             "instructions": "This is a new test tool",
-            "categories": [self.category.id]
+            "topics": [self.topic.id]
         }, format='json')
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         print("User is not the owner and cannot update a tool")

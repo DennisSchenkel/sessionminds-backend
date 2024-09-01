@@ -22,21 +22,21 @@ class Icon(models.Model):
         return self.title
 
 
-class Category(models.Model):
+class Topic(models.Model):
     """
-    Represents a category.
+    Represents a topic.
 
     Attributes:
-        title (str): The title of the category.
-        description (str): The description of the category.
-        icon (Icon): The icon associated with the category.
-        slug (str): The slug for the category.
-        created (datetime): Date and time when the category was created.
-        updated (datetime): Date and time when the category was last updated.
+        title (str): The title of the topic.
+        description (str): The description of the topic.
+        icon (Icon): The icon associated with the topic.
+        slug (str): The slug for the topic.
+        created (datetime): Date and time when the topic was created.
+        updated (datetime): Date and time when the topic was last updated.
     """
 
     title = models.CharField(max_length=100, unique=True)
-    description = models.TextField(max_length=500, blank=True)
+    description = models.TextField(max_length=50, blank=True)
     icon = models.ForeignKey(
         Icon,
         on_delete=models.SET_NULL,

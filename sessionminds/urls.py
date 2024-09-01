@@ -27,6 +27,6 @@ urlpatterns = [
          name="token_blacklist"
          ),
     path("", include("profiles.urls")),
-    path("", include("categories.urls")),
+    path("", include("topics.urls")),
     path("", include("tools.urls")),
 ]

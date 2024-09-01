@@ -6,7 +6,3 @@ from django_summernote.admin import SummernoteModelAdmin
 @admin.register(Profile)
 class ProfileAdmin(SummernoteModelAdmin):
     list_display = ("id", "user", "first_name", "last_name", "user_id",)
-
-
-# The IDs of profiles and users
-# are not identical in the database.

@@ -1,14 +1,14 @@
 from rest_framework import serializers
 from .models import Tool
-from categories.serializers import CategorySerializer
+from topics.serializers import TopicSerializer
 from profiles.serializers import ProfileSerializer
 
 
 class ToolSerializer(serializers.ModelSerializer):
-    user = serializers.ReadOnlyField(source="user.username")
     is_owner = serializers.SerializerMethodField()
-    category = CategorySerializer(many=True, read_only=True)
+    user = serializers.ReadOnlyField(source="user.username")
     profile = ProfileSerializer(source='user.profile', read_only=True)
+    topics = TopicSerializer(many=True, read_only=True)
 
     def get_is_owner(self, obj):
         """
@@ -30,9 +30,9 @@ class ToolSerializer(serializers.ModelSerializer):
             "user",
             "profile",
             "title",
+            "topics",
             "short_description",
             "full_description",
-            "category",
             "instructions",
             "slug",
             "created",

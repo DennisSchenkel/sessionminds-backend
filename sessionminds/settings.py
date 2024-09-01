@@ -60,11 +60,10 @@ INSTALLED_APPS = [
     "allauth.account",
     "allauth.socialaccount",
 
-
     # Apps
     "profiles",
-    "categories",
     "tools",
+    "topics",
 
     # Other apps
     "cloudinary",
@@ -137,7 +136,6 @@ else:
             "PORT": env("DB_PORT"),
             "OPTIONS": {
                 "sslmode": env("DB_SSLMODE"),
-                "options": env("DB_OPTIONS"),
             },
         }
     }

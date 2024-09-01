@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
-from categories.models import Category
+from topics.models import Topic
 from django.utils.text import slugify
 
 
@@ -12,7 +12,7 @@ class Tool(models.Model):
         title (str): The title of the tool.
         short_description (str): The short description of the tool.
         full_description (str): The full description of the tool.
-        categories (ManyToManyField): The categories associated with the tool.
+        topics (ManyToManyField): The topics associated with the tool.
         instructions (str): The instructions for using the tool.
         user (ForeignKey): The author of the tool entry.
         created (datetime): Date and time when the tool was created.
@@ -22,7 +22,7 @@ class Tool(models.Model):
     title = models.CharField(max_length=100, unique=True)
     short_description = models.TextField(max_length=50, blank=True)
     full_description = models.TextField(max_length=500, blank=True)
-    category = models.ManyToManyField(Category, related_name="tools")
+    topics = models.ManyToManyField(Topic, related_name="tools")
     instructions = models.TextField(max_length=5000, blank=True)
     slug = models.SlugField(unique=True, null=True, blank=True)
     user = models.ForeignKey(

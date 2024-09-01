@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Category, Icon
+from .models import Topic, Icon
 
 
 class IconSerializer(serializers.ModelSerializer):
@@ -13,11 +13,11 @@ class IconSerializer(serializers.ModelSerializer):
             ]
 
 
-class CategorySerializer(serializers.ModelSerializer):
+class TopicSerializer(serializers.ModelSerializer):
     icon = IconSerializer(read_only=True)
 
     class Meta:
-        model = Category
+        model = Topic
         fields = [
             "id",
             "title",
