@@ -38,5 +38,8 @@ class Tool(models.Model):
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
 
+    def vote_count(self):
+        return self.votes.count()
+
     def __str__(self):
         return self.title

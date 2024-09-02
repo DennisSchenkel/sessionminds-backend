@@ -1,6 +1,7 @@
+from django.db.models import Count
+from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from django.http import Http404
 from .serializers import TopicSerializer, IconSerializer
 from .models import Topic, Icon
 
@@ -16,13 +17,15 @@ class TopicsList(APIView):
         get(request): Retrieves all categories and returns serialized data.
     """
     def get(self, request):
-        topics = Topic.objects.all()
+        topics = Topic.objects.all().annotate(
+                tool_count=Count("tools")
+                )
         serializer = TopicSerializer(topics, many=True)
         return Response(serializer.data)
 
 
 # Get single category by slug
-class TopicDetail(APIView):
+class TopicDetailsBySlug(APIView):
     """
     A view to retrieve a specific category.
 
@@ -40,7 +43,9 @@ class TopicDetail(APIView):
     # This method is only to validate the category exists
     def get_object(self, slug):
         try:
-            topic = Topic.objects.get(slug=slug)
+            topic = Topic.objects.get(slug=slug).annotate(
+                tool_count=Count("tools")
+                )
             self.check_object_permissions(self.request, topic)
             return topic
         except Topic.DoesNotExist:
@@ -66,12 +71,14 @@ class TopicDetail(APIView):
         return Response(serializer.data)
 
 
-class TopicDetailById(APIView):
+class TopicDetailsById(APIView):
     serializer_class = TopicSerializer
 
     def get_object(self, id):
         try:
-            topic = Topic.objects.get(id=id)
+            topic = Topic.objects.get(id=id).annotate(
+                tool_count=Count("tools")
+                )
             self.check_object_permissions(self.request, topic)
             return topic
         except Topic.DoesNotExist:

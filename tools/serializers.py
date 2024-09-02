@@ -9,6 +9,7 @@ class ToolSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source="user.username")
     profile = ProfileSerializer(source="user.profile", read_only=True)
     topics = TopicSerializer(many=True, read_only=True)
+    vote_count = serializers.SerializerMethodField()
 
     def get_is_owner(self, obj):
         """
@@ -22,6 +23,9 @@ class ToolSerializer(serializers.ModelSerializer):
         """
         request = self.context["request"]
         return request.user == obj.user
+
+    def get_vote_count(self, obj):
+        return obj.votes.count()
 
     class Meta:
         model = Tool
@@ -38,4 +42,5 @@ class ToolSerializer(serializers.ModelSerializer):
             "created",
             "updated",
             "is_owner",
+            "vote_count",
             ]

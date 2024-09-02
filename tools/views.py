@@ -1,4 +1,5 @@
 from django.http import Http404
+from django.db.models import Count
 from rest_framework import status, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -23,7 +24,9 @@ class ToolList(APIView):
     serializer_class = ToolSerializer
 
     def get(self, request):
-        tools = Tool.objects.all()
+        tools = Tool.objects.all().annotate(
+            vote_count=Count('votes')
+            )
         serializer = ToolSerializer(
             tools, many=True, context={"request": request}
             )
@@ -58,7 +61,9 @@ class ToolDetailById(APIView):
     # This method is only to validate the tool exists
     def get_object(self, id):
         try:
-            tool = Tool.objects.get(id=id)
+            tool = Tool.objects.get(id=id).annotate(
+                vote_count=Count('votes')
+                )
             self.check_object_permissions(self.request, tool)
             return tool
         except Tool.DoesNotExist:
@@ -112,7 +117,9 @@ class ToolDetailBySlug(APIView):
     # This method is only to validate the tool exists
     def get_object(self, slug):
         try:
-            tool = Tool.objects.get(slug=slug)
+            tool = Tool.objects.get(slug=slug).annotate(
+                vote_count=Count('votes')
+                )
             self.check_object_permissions(self.request, tool)
             return tool
         except Tool.DoesNotExist:

@@ -15,6 +15,7 @@ class IconSerializer(serializers.ModelSerializer):
 
 class TopicSerializer(serializers.ModelSerializer):
     icon = IconSerializer(read_only=True)
+    tool_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Topic
@@ -24,4 +25,8 @@ class TopicSerializer(serializers.ModelSerializer):
             "description",
             "icon",
             "slug",
+            "tool_count",
             ]
+
+    def get_tool_count(self, obj):
+        return obj.tools.count()
