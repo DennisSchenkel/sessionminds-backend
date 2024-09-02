@@ -40,8 +40,8 @@ class Profile(models.Model):
     last_name = models.CharField(max_length=100, blank=True)
     profile_description = models.TextField(max_length=500, blank=True)
     linkedin = models.URLField(max_length=200, blank=True)
-    image = models.ImageField(default='../anonymdog_tnbngb',
-                              upload_to='user-images/')
+    image = models.ImageField(default="../anonymdog_tnbngb",
+                              upload_to="user-images/")
 
     def __str__(self):
         return self.user.username

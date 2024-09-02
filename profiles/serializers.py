@@ -126,7 +126,7 @@ class LoginSerializer(serializers.Serializer):
                     )
         else:
             raise serializers.ValidationError(
-                'Both "email" and "password" are required.'
+                "Both 'email' and 'password' are required."
                 )
 
         data["user"] = user

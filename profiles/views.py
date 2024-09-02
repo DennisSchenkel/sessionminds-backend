@@ -235,7 +235,7 @@ class LogoutView(APIView):
 
     def post(self, request, *args, **kwargs):
         # Blacklist the access token
-        access_token = request.headers.get('Authorization', '').split(' ')[-1]
+        access_token = request.headers.get("Authorization", "").split(" ")[-1]
         if access_token:
             try:
                 token = AccessToken(access_token)

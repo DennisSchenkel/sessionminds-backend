@@ -4,8 +4,13 @@ from tools import views
 urlpatterns = [
     path("tools/", views.ToolList.as_view()),
     path(
+        "tools/<int:id>/",
+        views.ToolDetailById.as_view(),
+        name="tool-detail"
+        ),
+    path(
         "tools/tool/<slug:slug>/",
-        views.ToolDetail.as_view(),
+        views.ToolDetailBySlug.as_view(),
         name="tool-detail"
         ),
 ]

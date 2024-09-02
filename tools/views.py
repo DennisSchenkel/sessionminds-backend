@@ -25,7 +25,7 @@ class ToolList(APIView):
     def get(self, request):
         tools = Tool.objects.all()
         serializer = ToolSerializer(
-            tools, many=True, context={'request': request}
+            tools, many=True, context={"request": request}
             )
         return Response(serializer.data)
 
@@ -40,8 +40,61 @@ class ToolList(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+class ToolDetailById(APIView):
+    """
+    A view for retrieving a single tool.
+
+    Inherits from APIView class.
+
+    Methods:
+        get(request, id):
+            Retrieves a single tool and returns serialized data.
+    """
+
+    permission_classes = [IsOwnerOrReadOnly]
+    serializer_class = ToolSerializer
+
+    # Check if tool exists and return it or return 404
+    # This method is only to validate the tool exists
+    def get_object(self, id):
+        try:
+            tool = Tool.objects.get(id=id)
+            self.check_object_permissions(self.request, tool)
+            return tool
+        except Tool.DoesNotExist:
+            raise Http404
+
+    # Get tool by id and return it
+    # If tool does exist, return it so it can be used
+    def get(self, request, id):
+        tool = self.get_object(id)
+        serializer = ToolSerializer(
+            tool, context={"request": request}
+            )
+        return Response(serializer.data)
+
+    # Update tool by id
+    def put(self, request, id):
+        tool = self.get_object(id)
+        serializer = ToolSerializer(
+            tool,
+            data=request.data,
+            context={"request": request}
+            )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    # Delete tool by id
+    def delete(self, request, id):
+        tool = self.get_object(id)
+        tool.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 # Get a single tool
-class ToolDetail(APIView):
+class ToolDetailBySlug(APIView):
     """
     A view for retrieving a single tool.
 

@@ -64,6 +64,7 @@ INSTALLED_APPS = [
     "profiles",
     "tools",
     "topics",
+    "votes",
 
     # Other apps
     "cloudinary",
@@ -169,7 +170,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'Europe/Berlin'
+TIME_ZONE = "Europe/Berlin"
 
 USE_I18N = True
 
@@ -212,16 +213,16 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
-    'BLACKLIST_AFTER_ROTATION': True,
-    'ROTATE_REFRESH_TOKENS': True,
-    'UPDATE_LAST_LOGIN': True,
-    'ALGORITHM': 'HS256',
-    'SIGNING_KEY': SECRET_KEY,
-    'VERIFYING_KEY': None,
-    'AUTH_HEADER_TYPES': ('Bearer',),
-    'AUTH_HEADER_NAME': 'HTTP_AUTHORIZATION',
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "BLACKLIST_AFTER_ROTATION": True,
+    "ROTATE_REFRESH_TOKENS": True,
+    "UPDATE_LAST_LOGIN": True,
+    "ALGORITHM": "HS256",
+    "SIGNING_KEY": SECRET_KEY,
+    "VERIFYING_KEY": None,
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
 }
 
 REST_AUTH_SERIALIZERS = {

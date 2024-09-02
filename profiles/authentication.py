@@ -10,7 +10,7 @@ class CustomJWTAuthentication(JWTAuthentication):
                       str
                       ) and BlacklistedToken.objects.filter(
                           token=raw_token).exists():
-            raise exceptions.AuthenticationFailed('Token is blacklisted.')
+            raise exceptions.AuthenticationFailed("Token is blacklisted.")
 
         # Give the token to the parent class
         return super().get_validated_token(raw_token)

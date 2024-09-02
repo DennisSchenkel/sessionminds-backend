@@ -61,7 +61,7 @@ class TopicDetail(APIView):
         """
         topic = self.get_object(slug)
         serializer = TopicSerializer(
-            topic, context={'request': request}
+            topic, context={"request": request}
             )
         return Response(serializer.data)
 
@@ -80,7 +80,7 @@ class TopicDetailById(APIView):
     def get(self, request, id):
         topic = self.get_object(id)
         serializer = TopicSerializer(
-            topic, context={'request': request}
+            topic, context={"request": request}
             )
         return Response(serializer.data)
 

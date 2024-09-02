@@ -103,7 +103,7 @@ class ToolsDetailViewTest(APITestCase):
             "full_description": "This is a new test tool",
             "instructions": "This is a new test tool",
             "topics": [self.topic.id]
-        }, format='json')
+        }, format="json")
 
         self.tool.refresh_from_db()
 
@@ -135,7 +135,7 @@ class ToolsDetailViewTest(APITestCase):
             "full_description": "This is a new test tool",
             "instructions": "This is a new test tool",
             "topics": [self.topic.id]
-        }, format='json')
+        }, format="json")
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         print("User is not the owner and cannot update a tool")
 

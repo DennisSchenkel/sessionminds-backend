@@ -12,7 +12,7 @@ urlpatterns = [
     path(
         "users/<int:user_id>/profile/",
         views.UserProfileView.as_view(),
-        name='user-profile'
+        name="user-profile"
         ),
     path("profiles/", views.ProfileList.as_view()),
     path("profiles/<int:id>/", views.ProfileDetail.as_view()),
