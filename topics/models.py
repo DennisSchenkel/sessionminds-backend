@@ -52,6 +52,9 @@ class Topic(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+ 
+    def tool_count(self):
+        return self.tools.count()
 
     def __str__(self):
         return self.title

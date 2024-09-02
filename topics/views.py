@@ -16,10 +16,18 @@ class TopicsList(APIView):
     Methods:
         get(request): Retrieves all categories and returns serialized data.
     """
+
     def get(self, request):
-        topics = Topic.objects.all().annotate(
+
+        ordering = request.query_params.get("ordering", "top")
+
+        if ordering == "top":
+            topics = Topic.objects.annotate(
                 tool_count=Count("tools")
-                )
+                ).order_by("-tool_count")
+        else:
+            topics = Topic.objects.all().order_by("title")
+
         serializer = TopicSerializer(topics, many=True)
         return Response(serializer.data)
 

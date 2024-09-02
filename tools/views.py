@@ -24,9 +24,16 @@ class ToolList(APIView):
     serializer_class = ToolSerializer
 
     def get(self, request):
-        tools = Tool.objects.all().annotate(
-            vote_count=Count('votes')
-            )
+
+        ordering = request.query_params.get("ordering", "latest")
+
+        if ordering == "votes":
+            tools = Tool.objects.annotate(
+                vote_count=Count("votes")
+                ).order_by("-vote_count")
+        else:
+            tools = Tool.objects.all().order_by("-created")
+
         serializer = ToolSerializer(
             tools, many=True, context={"request": request}
             )
@@ -62,7 +69,7 @@ class ToolDetailById(APIView):
     def get_object(self, id):
         try:
             tool = Tool.objects.get(id=id).annotate(
-                vote_count=Count('votes')
+                vote_count=Count("votes")
                 )
             self.check_object_permissions(self.request, tool)
             return tool
@@ -118,7 +125,7 @@ class ToolDetailBySlug(APIView):
     def get_object(self, slug):
         try:
             tool = Tool.objects.get(slug=slug).annotate(
-                vote_count=Count('votes')
+                vote_count=Count("votes")
                 )
             self.check_object_permissions(self.request, tool)
             return tool
