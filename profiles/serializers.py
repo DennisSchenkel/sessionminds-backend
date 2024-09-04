@@ -1,13 +1,17 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
+from django.db import models
 from rest_framework import serializers
 from .models import Profile
+from tools.models import Tool
 
 
 class ProfileSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source="user.username")
     is_owner = serializers.SerializerMethodField()
+    tool_count = serializers.SerializerMethodField()
+    total_votes = serializers.SerializerMethodField()
 
     def get_is_owner(self, obj):
         """
@@ -53,8 +57,21 @@ class ProfileSerializer(serializers.ModelSerializer):
             "created",
             "updated",
             "user_id",
-            "is_owner"
+            "is_owner",
+            "tool_count",
+            "total_votes",
             ]
+
+    def get_tool_count(self, obj):
+        return Tool.objects.filter(user=obj.user).count()
+
+    def get_total_votes(self, obj):
+        users_tools = Tool.objects.filter(user=obj.user)
+        total_votes = users_tools.annotate(
+            vote_count=models.Count('votes')).aggregate(
+                total_votes=models.Sum('vote_count')
+                )['total_votes']
+        return int(total_votes) if total_votes is not None else 0
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -69,7 +86,7 @@ class UserSerializer(serializers.ModelSerializer):
             "email",
             "first_name",
             "last_name",
-            "date_joined"
+            "date_joined",
             ]
 
     def update(self, instance, validated_data):
