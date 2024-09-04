@@ -85,10 +85,18 @@ class ToolsDetailViewTest(APITestCase):
             slug="test-tool",
             user=self.user
         )
+        print("The ID is: ", self.tool.id)
 
     # Test to get a single tool by slug
-    def test_get_single_tool(self):
+    def test_get_single_tool_by_slug(self):
         response = self.client.get(f"/tools/tool/{self.tool.slug}/")
+        print(response.data)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        print("User can see a single tool")
+
+    # Test to get a single tool by id
+    def test_get_single_tool_by_id(self):
+        response = self.client.get(f"/tools/{self.tool.id}/")
         print(response.data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         print("User can see a single tool")
@@ -97,7 +105,7 @@ class ToolsDetailViewTest(APITestCase):
     def test_update_tool(self):
         self.client.login(username="TestUser", password="TestUser1234!!")
 
-        response = self.client.put(f"/tools/tool/{self.tool.slug}/", {
+        response = self.client.put(f"/tools/{self.tool.id}/", {
             "title": "Test Tool",
             "short_description": "This is a new test tool",
             "full_description": "This is a new test tool",
@@ -118,7 +126,7 @@ class ToolsDetailViewTest(APITestCase):
     # Test to delete a tool
     def test_delete_tool(self):
         self.client.login(username="TestUser", password="TestUser1234!!")
-        response = self.client.delete(f"/tools/tool/{self.tool.slug}/")
+        response = self.client.delete(f"/tools/{self.tool.id}/")
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         print("User can delete a tool")
 

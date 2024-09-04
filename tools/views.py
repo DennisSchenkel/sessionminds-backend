@@ -68,9 +68,7 @@ class ToolDetailById(APIView):
     # This method is only to validate the tool exists
     def get_object(self, id):
         try:
-            tool = Tool.objects.get(id=id).annotate(
-                vote_count=Count("votes")
-                )
+            tool = Tool.objects.get(id=id)
             self.check_object_permissions(self.request, tool)
             return tool
         except Tool.DoesNotExist:
@@ -124,9 +122,7 @@ class ToolDetailBySlug(APIView):
     # This method is only to validate the tool exists
     def get_object(self, slug):
         try:
-            tool = Tool.objects.get(slug=slug).annotate(
-                vote_count=Count("votes")
-                )
+            tool = Tool.objects.get(slug=slug)
             self.check_object_permissions(self.request, tool)
             return tool
         except Tool.DoesNotExist:

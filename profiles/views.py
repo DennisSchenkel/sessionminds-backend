@@ -5,7 +5,7 @@ from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
-from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
+from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Profile
 from .serializers import (
     ProfileSerializer,
@@ -234,17 +234,6 @@ class LogoutView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
-        # Blacklist the access token
-        access_token = request.headers.get("Authorization", "").split(" ")[-1]
-        if access_token:
-            try:
-                token = AccessToken(access_token)
-                token.blacklist()
-            except Exception as e:
-                return Response(
-                    {"error": str(e)},
-                    status=status.HTTP_400_BAD_REQUEST
-                    )
 
         # Blacklist the refresh token
         refresh_token = request.data.get("refreshToken")
