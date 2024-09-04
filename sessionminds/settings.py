@@ -61,7 +61,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount",
 
     # Apps
-    "profiles",
+    "profiles.apps.ProfilesConfig",
     "tools",
     "topics",
     "votes",

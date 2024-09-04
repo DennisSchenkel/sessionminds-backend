@@ -27,8 +27,16 @@ class ProfileList(APIView):
     Methods:
         get(request): Retrieves all profiles and returns serialized data.
     """
+    serializer_class = ProfileSerializer
+
     def get(self, request):
-        profiles = Profile.objects.all()
+        ordering = self.request.query_params.get("ordering", "tools")
+
+        if ordering == "tools":
+            profiles = Profile.objects.all().order_by("-tool_count")
+        else:
+            profiles = Profile.objects.all().order_by("-total_votes")
+
         serializer = ProfileSerializer(
             profiles, many=True, context={"request": request}
             )

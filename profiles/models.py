@@ -42,6 +42,8 @@ class Profile(models.Model):
     linkedin = models.URLField(max_length=200, blank=True)
     image = models.ImageField(default="../anonymdog_tnbngb",
                               upload_to="user-images/")
+    tool_count = models.PositiveIntegerField(default=0)
+    total_votes = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return self.user.username
