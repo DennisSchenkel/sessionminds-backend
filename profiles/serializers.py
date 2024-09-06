@@ -45,17 +45,17 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = [
             "id",
             "user",
+            "user_id",
             "first_name",
             "last_name",
             "profile_description",
             "linkedin",
             "image",
-            "created",
-            "updated",
-            "user_id",
-            "is_owner",
             "tool_count",
             "total_votes",
+            "created",
+            "updated",
+            "is_owner",
             ]
 
     def get_tool_count(self, obj):

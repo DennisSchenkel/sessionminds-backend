@@ -23,9 +23,9 @@ class TopicSerializer(serializers.ModelSerializer):
             "id",
             "title",
             "description",
-            "icon",
             "slug",
             "tool_count",
+            "icon",
             ]
 
     def get_tool_count(self, obj):
