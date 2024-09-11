@@ -48,7 +48,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "user_id",
             "first_name",
             "last_name",
-            "title",
+            "job_title",
             "profile_description",
             "linkedin",
             "twitter",
