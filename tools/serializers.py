@@ -54,6 +54,7 @@ class ToolSerializer(serializers.ModelSerializer):
             "topics",
             "topic_ids",
             "profile",
+            "icon",
             "slug",
             "created",
             "updated",

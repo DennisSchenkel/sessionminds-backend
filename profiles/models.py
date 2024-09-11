@@ -38,8 +38,12 @@ class Profile(models.Model):
     updated = models.DateTimeField(auto_now=True)
     first_name = models.CharField(max_length=100, blank=True)
     last_name = models.CharField(max_length=100, blank=True)
+    title = models.CharField(max_length=100, blank=True)
     profile_description = models.TextField(max_length=500, blank=True)
     linkedin = models.URLField(max_length=200, blank=True)
+    twitter = models.URLField(max_length=200, blank=True)
+    facebook = models.URLField(max_length=200, blank=True)
+    instagram = models.URLField(max_length=200, blank=True)
     image = models.ImageField(default="../anonymdog_tnbngb",
                               upload_to="user-images/")
     tool_count = models.PositiveIntegerField(default=0)
