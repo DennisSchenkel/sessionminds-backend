@@ -4,6 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .serializers import TopicSerializer, IconSerializer
 from .models import Topic, Icon
+from rest_framework.permissions import AllowAny
 
 
 # Get all categories
@@ -16,6 +17,8 @@ class TopicsList(APIView):
     Methods:
         get(request): Retrieves all categories and returns serialized data.
     """
+
+    permission_classes = [AllowAny]
 
     def get(self, request):
 
