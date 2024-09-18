@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
+from django.utils.text import slugify
 
 
 # Model for user profiles
@@ -48,6 +49,7 @@ class Profile(models.Model):
                               upload_to="user-images/")
     tool_count = models.PositiveIntegerField(default=0)
     total_votes = models.PositiveIntegerField(default=0)
+    slug = models.SlugField(unique=True, null=True, blank=True)
 
     def __str__(self):
         return self.user.username
@@ -75,6 +77,12 @@ class Profile(models.Model):
         """
         if created:
             Profile.objects.create(user=instance)
+
+    # Generate a slug for the profile on save
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        super().save(*args, **kwargs)
 
     # Connect the signal receiver to the User model
     post_save.connect(create_profile, sender=User)

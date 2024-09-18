@@ -1,43 +1,32 @@
 from django.db.models.signals import post_save, post_delete
-from django.db import models
 from django.dispatch import receiver
 from tools.models import Tool
 from votes.models import Vote
 
 
+def update_profile_total_votes(profile):
+    profile.total_votes = Vote.objects.filter(
+        tool__user=profile.user
+        ).count() or 0
+    profile.save(update_fields=['total_votes'])
+
+
+def update_profile_tool_count(profile):
+    profile.tool_count = Tool.objects.filter(
+        user=profile.user
+        ).count() or 0
+    profile.save(update_fields=['tool_count'])
+
+
 @receiver(post_save, sender=Vote)
-def update_total_votes(sender, instance, created, **kwargs):
-    if created:
-        profile = instance.tool.user.profile
-        profile.total_votes = Tool.objects.filter(
-            user=instance.tool.user).aggregate(
-                total_votes=models.Sum('votes')
-                ).get('total_votes', 0)
-        profile.save()
-
-
 @receiver(post_delete, sender=Vote)
-def decrease_total_votes(sender, instance, **kwargs):
+def update_total_votes(sender, instance, **kwargs):
     profile = instance.tool.user.profile
-    profile.total_votes = Tool.objects.filter(
-        user=instance.tool.user).aggregate(
-            total_votes=models.Sum('votes')
-            ).get('total_votes', 0)
-    profile.save()
+    update_profile_total_votes(profile)
 
 
 @receiver(post_save, sender=Tool)
-def update_tool_count(sender, instance, created, **kwargs):
-    if created:
-        profile = instance.user.profile
-        profile.tool_count = Tool.objects.filter(
-            user=instance.user).count()
-        profile.save()
-
-
 @receiver(post_delete, sender=Tool)
-def decrease_tool_count(sender, instance, **kwargs):
+def update_tool_count(sender, instance, **kwargs):
     profile = instance.user.profile
-    profile.tool_count = Tool.objects.filter(
-        user=instance.user).count()
-    profile.save()
+    update_profile_tool_count(profile)

@@ -6,6 +6,11 @@ from .models import Vote
 class VoteSerializer(serializers.ModelSerializer):
 
     user = serializers.ReadOnlyField(source="user.username")
+    is_owner = serializers.SerializerMethodField()
+
+    def get_is_owner(self, obj):
+        request = self.context["request"]
+        return request.user == obj.user
 
     class Meta:
         model = Vote

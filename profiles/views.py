@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status, generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from .models import Profile
 from .serializers import (
@@ -27,6 +27,7 @@ class ProfileList(APIView):
     Methods:
         get(request): Retrieves all profiles and returns serialized data.
     """
+    permission_classes = [IsOwnerOrReadOnly]
     serializer_class = ProfileSerializer
 
     def get(self, request):
@@ -135,9 +136,20 @@ class ProfileDetail(APIView):
 
 # Get single profile by user id
 class UserProfileView(APIView):
+    permission_classes = [IsOwnerOrReadOnly]
+
     def get(self, request, user_id):
         user = get_object_or_404(User, id=user_id)
         profile = get_object_or_404(Profile, user=user)
+        serializer = ProfileSerializer(profile, context={"request": request})
+        return Response(serializer.data)
+
+
+# Get single profile by user slug
+class UserProfileViewSlug(APIView):
+
+    def get(self, request, slug):
+        profile = get_object_or_404(Profile, slug=slug)
         serializer = ProfileSerializer(profile, context={"request": request})
         return Response(serializer.data)
 
@@ -171,6 +183,8 @@ class UserDetailView(APIView):
 
 # Update user account
 class UserUpdateView(APIView):
+    permission_classes = [IsOwnerOrReadOnly]
+
     def put(self, request, user_id):
         user = get_object_or_404(User, id=user_id)
         serializer = UserSerializer(user, data=request.data, partial=True)
@@ -218,6 +232,7 @@ class RegistrationView(generics.CreateAPIView):
 
 # Login user
 class LoginView(generics.GenericAPIView):
+    permission_classes = [AllowAny]
     serializer_class = LoginSerializer
 
     def post(self, request, *args, **kwargs):
@@ -231,8 +246,8 @@ class LoginView(generics.GenericAPIView):
         refresh_token = str(refresh)
 
         return Response({
-            "accessToken": access_token,
-            "refreshToken": refresh_token,
+            "access": access_token,
+            "refresh": refresh_token,
             "user_id": user.id,
             "email": user.email
         }, status=status.HTTP_200_OK)

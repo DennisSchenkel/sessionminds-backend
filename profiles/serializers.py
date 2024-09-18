@@ -57,6 +57,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "image",
             "tool_count",
             "total_votes",
+            "slug",
             "created",
             "updated",
             "is_owner",

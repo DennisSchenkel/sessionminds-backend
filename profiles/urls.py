@@ -1,6 +1,5 @@
 from django.urls import path
 from profiles import views
-from .views import LogoutView, ProtectedView
 
 urlpatterns = [
     path("users/", views.UsersListView.as_view(), name="user-list"),
@@ -18,6 +17,6 @@ urlpatterns = [
     path("profiles/<int:id>/", views.ProfileDetail.as_view()),
     path("register/", views.RegistrationView.as_view(), name="register"),
     path("login/", views.LoginView.as_view(), name="login"),
-    path("logout/", LogoutView.as_view(), name="logout"),
-    path("protected/", ProtectedView.as_view(), name="protected"),
+    path("logout/", views.LogoutView.as_view(), name="logout"),
+    path("protected/", views.ProtectedView.as_view(), name="protected"),
 ]
