@@ -3,6 +3,7 @@ from django.db.models import Count
 from rest_framework import status, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from sessionminds.pagination import CustomPageNumberPagination
 from .models import Tool
 from .serializers import ToolSerializer
 from sessionminds.permissions import IsOwnerOrReadOnly
@@ -34,10 +35,13 @@ class ToolList(APIView):
         else:
             tools = Tool.objects.all().order_by("-created")
 
+        paginator = CustomPageNumberPagination()
+        paginated_tools = paginator.paginate_queryset(tools, request)
+
         serializer = ToolSerializer(
-            tools, many=True, context={"request": request}
+            paginated_tools, many=True, context={"request": request}
             )
-        return Response(serializer.data)
+        return paginator.get_paginated_response(serializer.data)
 
     def post(self, request):
         serializer = ToolSerializer(

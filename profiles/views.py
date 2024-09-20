@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
+from sessionminds.pagination import CustomPageNumberPagination
 from .models import Profile
 from .serializers import (
     ProfileSerializer,
@@ -38,10 +39,13 @@ class ProfileList(APIView):
         else:
             profiles = Profile.objects.all().order_by("-total_votes")
 
+        paginator = CustomPageNumberPagination()
+        paginated_profiles = paginator.paginate_queryset(profiles, request)
+
         serializer = ProfileSerializer(
-            profiles, many=True, context={"request": request}
+            paginated_profiles, many=True, context={"request": request}
             )
-        return Response(serializer.data)
+        return paginator.get_paginated_response(serializer.data)
 
 
 # Get single profile by profile id

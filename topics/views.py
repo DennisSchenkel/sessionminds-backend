@@ -2,6 +2,7 @@ from django.db.models import Count
 from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from sessionminds.pagination import CustomPageNumberPagination
 from .serializers import TopicSerializer, IconSerializer
 from .models import Topic, Icon
 from rest_framework.permissions import AllowAny
@@ -31,8 +32,11 @@ class TopicsList(APIView):
         else:
             topics = Topic.objects.all().order_by("title")
 
-        serializer = TopicSerializer(topics, many=True)
-        return Response(serializer.data)
+        paginator = CustomPageNumberPagination()
+        paginated_topics = paginator.paginate_queryset(topics, request)
+
+        serializer = TopicSerializer(paginated_topics, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
 
 # Get single category by slug
