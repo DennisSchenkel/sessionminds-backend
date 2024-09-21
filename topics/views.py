@@ -4,8 +4,11 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from sessionminds.pagination import CustomPageNumberPagination
 from .serializers import TopicSerializer, IconSerializer
+from tools.serializers import ToolSerializer
 from .models import Topic, Icon
+from tools.models import Tool
 from rest_framework.permissions import AllowAny
+from rest_framework import permissions
 
 
 # Get all categories
@@ -52,15 +55,14 @@ class TopicDetailsBySlug(APIView):
         get(request, slug):
             Get category by slug and return it.
     """
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = TopicSerializer
 
     # Check if category exists and return it or return 404
     # This method is only to validate the category exists
     def get_object(self, slug):
         try:
-            topic = Topic.objects.get(slug=slug).annotate(
-                tool_count=Count("tools")
-                )
+            topic = Topic.objects.get(slug=slug)
             self.check_object_permissions(self.request, topic)
             return topic
         except Topic.DoesNotExist:
@@ -105,6 +107,29 @@ class TopicDetailsById(APIView):
             topic, context={"request": request}
             )
         return Response(serializer.data)
+
+
+class ToolsOfTopicBySlug(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = ToolSerializer
+
+    def get(self, request, slug):
+
+        ordering = request.query_params.get("ordering", "latest")
+        if ordering == "votes":
+            tools = Tool.objects.filter(topics__slug=slug).annotate(
+                vote_count=Count("votes")
+                ).order_by("-vote_count")
+        else:
+            tools = Tool.objects.filter(topics__slug=slug).order_by("-created")
+
+        paginator = CustomPageNumberPagination()
+        paginated_tools = paginator.paginate_queryset(tools, request)
+
+        serializer = ToolSerializer(
+            paginated_tools, many=True, context={"request": request}
+            )
+        return paginator.get_paginated_response(serializer.data)
 
 
 class IconsList(APIView):
