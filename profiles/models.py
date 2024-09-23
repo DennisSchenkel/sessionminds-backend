@@ -82,14 +82,24 @@ class Profile(models.Model):
 
     # Generate a slug for the profile on save
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(
-                self.first_name
-                + "-" +
-                self.last_name
-                + "-" +
-                str(self.user.id)
-            )
+        if self.first_name and self.last_name:
+            new_slug = slugify(
+                f"{self.first_name}-{self.last_name}-{self.user.id}"
+                )
+        else:
+            new_slug = slugify(f"profile-{self.user.id}")
+
+        # Check if the generated slug is unique
+        # If not, append a number to make it unique
+        unique_slug = new_slug
+        num = 1
+        while Profile.objects.filter(
+            slug=unique_slug
+        ).exclude(pk=self.pk).exists():
+            unique_slug = f"{new_slug}-{num}"
+            num += 1
+
+        self.slug = unique_slug
         super().save(*args, **kwargs)
 
     # Connect the signal receiver to the User model

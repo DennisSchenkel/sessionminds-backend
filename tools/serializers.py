@@ -30,7 +30,8 @@ class ToolSerializer(serializers.ModelSerializer):
     # Override the create method to handle topic_ids field
     def create(self, validated_data):
         topic_ids = validated_data.pop('topic_ids')
-        tool = Tool.objects.create(**validated_data)
+        user = self.context['request'].user
+        tool = Tool.objects.create(user=user, **validated_data)
         tool.topics.set(topic_ids)  # Set the related topics
         return tool
 

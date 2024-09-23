@@ -37,10 +37,10 @@ class ProfileSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 "Uploaded file is not a valid image."
                 )
-        
+
         # Reset the file pointer to the beginning of the file
         value.seek(0)
-            
+
         if value.image.width < 300 or value.image.height < 300:
             raise serializers.ValidationError(
                 "Image file is too small! ( min 300x300 pixels )"
