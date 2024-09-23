@@ -34,6 +34,7 @@ class Profile(models.Model):
         image (django.db.models.ImageField):
             An image associated with the user's profile.
     """
+
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
@@ -45,8 +46,9 @@ class Profile(models.Model):
     twitter = models.URLField(max_length=200, blank=True)
     facebook = models.URLField(max_length=200, blank=True)
     instagram = models.URLField(max_length=200, blank=True)
-    image = models.ImageField(default="../anonymdog_tnbngb",
-                              upload_to="user-images/")
+    image = models.ImageField(
+        default="../anonymdog_tnbngb", upload_to="user-images/"
+        )
     tool_count = models.PositiveIntegerField(default=0)
     total_votes = models.PositiveIntegerField(default=0)
     slug = models.SlugField(unique=True, null=True, blank=True)
@@ -81,7 +83,13 @@ class Profile(models.Model):
     # Generate a slug for the profile on save
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.title)
+            self.slug = slugify(
+                self.first_name
+                + "-" +
+                self.last_name
+                + "-" +
+                str(self.user.id)
+            )
         super().save(*args, **kwargs)
 
     # Connect the signal receiver to the User model

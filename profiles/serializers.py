@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
+from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
 from .models import Profile
 
@@ -99,15 +100,33 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(
+        required=True,
+        validators=[
+            UniqueValidator(
+                queryset=User.objects.all(),
+                message="You are already registered with this email."
+            )
+        ]
+    )
     password = serializers.CharField(
         write_only=True,
-        validators=[validate_password]
-        )
-    passwordConf = serializers.CharField(write_only=True)
+        required=True,
+        validators=[validate_password],
+        style={'input_type': 'password'}
+    )
+    passwordConf = serializers.CharField(
+        write_only=True,
+        required=True,
+        style={'input_type': 'password'}
+    )
 
     class Meta:
         model = User
         fields = ("email", "password", "passwordConf")
+
+    def validate_email(self, value):
+        return value.lower()
 
     def validate(self, data):
         if data["password"] != data["passwordConf"]:

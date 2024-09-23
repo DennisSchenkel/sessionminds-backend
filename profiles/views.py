@@ -7,6 +7,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from sessionminds.pagination import CustomPageNumberPagination
+from django.db import IntegrityError
 from .models import Profile
 from .serializers import (
     ProfileSerializer,
@@ -142,11 +143,22 @@ class ProfileDetail(APIView):
 class UserProfileView(APIView):
     permission_classes = [IsOwnerOrReadOnly]
 
-    def get(self, request, user_id):
-        user = get_object_or_404(User, id=user_id)
+    def get(self, request, id):
+        user = get_object_or_404(User, id=id)
         profile = get_object_or_404(Profile, user=user)
         serializer = ProfileSerializer(profile, context={"request": request})
         return Response(serializer.data)
+
+    def put(self, request, id):
+        user = get_object_or_404(User, id=id)
+        profile = get_object_or_404(Profile, user=user)
+        serializer = ProfileSerializer(
+            profile, data=request.data, context={"request": request}
+            )
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # Get single profile by user slug
@@ -214,7 +226,6 @@ class UserDeleteView(APIView):
                 status=status.HTTP_403_FORBIDDEN
                 )
 
-        # Benutzer löschen
         user.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -225,13 +236,21 @@ class RegistrationView(generics.CreateAPIView):
 
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        return Response({
-            "user": serializer.data,
-            "user_id": user.id,
-            "email": user.email
-        }, status=status.HTTP_201_CREATED)
+        try:
+            serializer.is_valid(raise_exception=True)
+            user = serializer.save()
+            return Response({
+                "user": serializer.data,
+                "user_id": user.id,
+                "email": user.email
+            }, status=status.HTTP_201_CREATED)
+        except IntegrityError:
+            return Response(
+                {"non_field_errors": [
+                    "A user with this email already exists."
+                    ]},
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 
 # Login user
