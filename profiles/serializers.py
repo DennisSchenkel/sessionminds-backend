@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate
 from django.contrib.auth.password_validation import validate_password
 from rest_framework.validators import UniqueValidator
 from rest_framework import serializers
+from PIL import Image
 from .models import Profile
 
 
@@ -28,6 +29,18 @@ class ProfileSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 "Image file is too large! ( max 2mb )"
                 )
+        try:
+            img = Image.open(value)
+            width, height = img.size
+            img_format = img.format
+        except Exception:
+            raise serializers.ValidationError(
+                "Uploaded file is not a valid image."
+                )
+        
+        # Reset the file pointer to the beginning of the file
+        value.seek(0)
+            
         if value.image.width < 300 or value.image.height < 300:
             raise serializers.ValidationError(
                 "Image file is too small! ( min 300x300 pixels )"
@@ -36,10 +49,12 @@ class ProfileSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError(
                 "Image file is too large! ( max 4096x4096 pixels )"
                 )
-        if value.file.content_type not in ["image/jpeg", "image/png"]:
+        if img_format not in ["JPEG", "PNG"]:
             raise serializers.ValidationError(
-                "Image file is not a valid format! ( jpeg, png )"
+                "Image file is not a valid format! (jpeg, png)"
                 )
+
+        return value
 
     class Meta:
         model = Profile

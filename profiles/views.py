@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.parsers import MultiPartParser, FormParser
 from sessionminds.pagination import CustomPageNumberPagination
 from django.db import IntegrityError
 from .models import Profile
@@ -65,6 +66,7 @@ class ProfileDetail(APIView):
 
     permission_classes = [IsOwnerOrReadOnly]
     serializer_class = ProfileSerializer
+    parser_classes = [MultiPartParser, FormParser]
 
     # Check if profile exists and return it or return 404
     # This method is only to validate the profile exists
