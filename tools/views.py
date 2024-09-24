@@ -3,6 +3,7 @@ from django.db.models import Count
 from rest_framework import status, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import generics
 from sessionminds.pagination import CustomPageNumberPagination
 from .models import Tool
 from .serializers import ToolSerializer
@@ -52,6 +53,24 @@ class ToolList(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ToolListByUser(generics.ListAPIView):
+    """
+    A view for retrieving a list of tools by user.
+
+    Methods:
+        get_queryset():
+            Retrieves all tools by user and returns serialized data.
+
+    """
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    serializer_class = ToolSerializer
+    pagination_class = CustomPageNumberPagination
+
+    def get_queryset(self):
+        user_id = self.kwargs.get("user_id")
+        return Tool.objects.filter(user__id=user_id)
 
 
 class ToolDetailById(APIView):
