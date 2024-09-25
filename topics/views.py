@@ -117,11 +117,11 @@ class ToolsOfTopicBySlug(APIView):
 
         ordering = request.query_params.get("ordering", "latest")
         if ordering == "votes":
-            tools = Tool.objects.filter(topics__slug=slug).annotate(
+            tools = Tool.objects.filter(topic__slug=slug).annotate(
                 vote_count=Count("votes")
                 ).order_by("-vote_count")
         else:
-            tools = Tool.objects.filter(topics__slug=slug).order_by("-created")
+            tools = Tool.objects.filter(topic__slug=slug).order_by("-created")
 
         paginator = CustomPageNumberPagination()
         paginated_tools = paginator.paginate_queryset(tools, request)

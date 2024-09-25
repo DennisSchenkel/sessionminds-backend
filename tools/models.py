@@ -22,7 +22,12 @@ class Tool(models.Model):
     title = models.CharField(max_length=100, unique=True)
     short_description = models.TextField(max_length=50, blank=False)
     full_description = models.TextField(max_length=500, blank=False)
-    topics = models.ManyToManyField(Topic, related_name="tools")
+    topic = models.ForeignKey(
+        Topic,
+        related_name="tools",
+        on_delete=models.SET_DEFAULT,
+        default=1
+    )
     instructions = models.TextField(max_length=5000, blank=False)
     icon = models.CharField(max_length=10, blank=False, default="26aa")
     slug = models.SlugField(unique=True, null=True, blank=True)

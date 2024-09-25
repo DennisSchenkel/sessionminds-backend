@@ -25,4 +25,5 @@ urlpatterns = [
     path("", include("topics.urls")),
     path("", include("tools.urls")),
     path("", include("votes.urls")),
+    path("", include("comments.urls")),
 ]

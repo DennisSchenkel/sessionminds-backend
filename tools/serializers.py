@@ -11,12 +11,15 @@ class ToolSerializer(serializers.ModelSerializer):
     profile = ProfileSerializer(source="user.profile", read_only=True)
 
     # Write-only field for accepting topic IDs on create/update
-    topic_ids = serializers.PrimaryKeyRelatedField(
-        queryset=Topic.objects.all(), many=True, write_only=True
+    topic_id = serializers.PrimaryKeyRelatedField(
+        queryset=Topic.objects.all(),
+        write_only=True,
+        required=False,
+        default=1
     )
 
     # Read-only field to include full topic details in the response
-    topics = TopicSerializer(many=True, read_only=True)
+    topic = TopicSerializer(read_only=True)
 
     vote_count = serializers.SerializerMethodField()
 
@@ -29,18 +32,21 @@ class ToolSerializer(serializers.ModelSerializer):
 
     # Override the create method to handle topic_ids field
     def create(self, validated_data):
-        topic_ids = validated_data.pop('topic_ids')
-        user = self.context['request'].user
+        topic = validated_data.pop("topic_id", None)
+        user = self.context["request"].user
         tool = Tool.objects.create(user=user, **validated_data)
-        tool.topics.set(topic_ids)  # Set the related topics
+        if topic:
+            tool.topic = topic
+            tool.save()
         return tool
 
     # Override the update method to handle topic_ids field
     def update(self, instance, validated_data):
-        topic_ids = validated_data.pop('topic_ids', None)
+        topic = validated_data.pop("topic_id", None)
         instance = super().update(instance, validated_data)
-        if topic_ids is not None:
-            instance.topics.set(topic_ids)
+        if topic is not None:
+            instance.topic = topic
+            instance.save()
         return instance
 
     class Meta:
@@ -52,8 +58,8 @@ class ToolSerializer(serializers.ModelSerializer):
             "short_description",
             "full_description",
             "instructions",
-            "topics",
-            "topic_ids",
+            "topic",
+            "topic_id",
             "profile",
             "icon",
             "slug",

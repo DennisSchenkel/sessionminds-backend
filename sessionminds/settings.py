@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     "tools",
     "topics",
     "votes",
+    "comments",
 
     # Other apps
     "cloudinary",
