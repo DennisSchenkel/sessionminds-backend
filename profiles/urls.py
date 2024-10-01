@@ -13,6 +13,7 @@ urlpatterns = [
         views.UserProfileView.as_view(),
         name="user-profile"
         ),
+    path("users/<int:id>/delete/", views.UserDeleteView.as_view()),
     path("profiles/", views.ProfileList.as_view()),
     path("profiles/<int:id>/", views.ProfileDetail.as_view()),
     path("profiles/<slug:slug>/", views.UserProfileViewSlug.as_view()),

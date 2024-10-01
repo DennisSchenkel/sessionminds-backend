@@ -81,11 +81,11 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     def get_tool_count(self, obj):
         # Access the annotated value in the queryset
-        return getattr(obj, 'annotated_tool_count', 0)
+        return getattr(obj, "annotated_tool_count", 0)
 
     def get_total_votes(self, obj):
         # Access the annotated value in the queryset
-        return getattr(obj, 'annotated_total_votes', 0)
+        return getattr(obj, "annotated_total_votes", 0)
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -128,12 +128,12 @@ class RegistrationSerializer(serializers.ModelSerializer):
         write_only=True,
         required=True,
         validators=[validate_password],
-        style={'input_type': 'password'}
+        style={"input_type": "password"}
     )
     passwordConf = serializers.CharField(
         write_only=True,
         required=True,
-        style={'input_type': 'password'}
+        style={"input_type": "password"}
     )
 
     class Meta:

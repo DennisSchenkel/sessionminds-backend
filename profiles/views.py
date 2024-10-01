@@ -217,10 +217,10 @@ class UserUpdateView(APIView):
 
 
 class UserDeleteView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsOwnerOrReadOnly]
 
-    def delete(self, request, user_id):
-        user = get_object_or_404(User, id=user_id)
+    def delete(self, request, id):
+        user = get_object_or_404(User, id=id)
 
         if request.user != user:
             return Response(

@@ -3,12 +3,14 @@ from .models import Tool
 from topics.models import Topic
 from topics.serializers import TopicSerializer
 from profiles.serializers import ProfileSerializer
+from comments.serializers import CommentSerializer
 
 
 class ToolSerializer(serializers.ModelSerializer):
     is_owner = serializers.SerializerMethodField()
     user = serializers.ReadOnlyField(source="user.username")
     profile = ProfileSerializer(source="user.profile", read_only=True)
+    comments = CommentSerializer(many=True, read_only=True)
 
     # Write-only field for accepting topic IDs on create/update
     topic_id = serializers.PrimaryKeyRelatedField(
@@ -67,4 +69,5 @@ class ToolSerializer(serializers.ModelSerializer):
             "updated",
             "is_owner",
             "vote_count",
+            "comments",
         ]
