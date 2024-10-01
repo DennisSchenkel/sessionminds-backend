@@ -5,5 +5,7 @@ from rest_framework.response import Response
 @api_view()
 def root_route(request):
     return Response({
-        "message": "Welcome to the SessionMinds API"
+        "Welcome to the SessionMinds API. For more information, visit "
+        "the documentation at: "
+        "https://github.com/DennisSchenkel/sessionminds-frontend"
     })

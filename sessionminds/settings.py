@@ -10,6 +10,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 environ.Env.read_env()
 
+env_file = os.path.join(BASE_DIR, '.env')
+environ.Env.read_env(env_file)
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -32,14 +36,9 @@ if TEST is True:
 else:
     print("TEST mode is off")
 
-ALLOWED_HOSTS = [
-    "127.0.0.1",
-    ".herokuapp.com",
-]
-
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
 # Application definition
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -108,11 +107,8 @@ TEMPLATES = [
 WSGI_APPLICATION = "sessionminds.wsgi.application"
 
 # CORS settings
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:9000",
-    "https://sessionminds-fe-0b8daceb91f0.herokuapp.com",
-]
+CORS_ALLOWED_ORIGINS = env.list("ALLOWED_ORIGINS")
+
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
