@@ -21,7 +21,7 @@ environ.Env.read_env(env_file)
 SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool("DEBUG", default=False)
 
 # Test environment variable
 TEST = False
@@ -107,7 +107,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "sessionminds.wsgi.application"
 
 # CORS settings
-CORS_ALLOWED_ORIGINS = ["http://localhost:5173"]
+CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS")
 
 print("CORS_ALLOWED_ORIGINS: ", CORS_ALLOWED_ORIGINS)
 
