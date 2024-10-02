@@ -107,7 +107,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "sessionminds.wsgi.application"
 
 # CORS settings
-CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[])
+CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS")
 
 print("CORS_ALLOWED_ORIGINS: ", CORS_ALLOWED_ORIGINS)
 
