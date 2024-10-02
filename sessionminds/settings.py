@@ -107,7 +107,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "sessionminds.wsgi.application"
 
 # CORS settings
-CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS")
+CORS_ALLOWED_ORIGINS = ["https://sessionminds-fe-0b8daceb91f0.herokuapp.com"]
 
 print("CORS_ALLOWED_ORIGINS: ", CORS_ALLOWED_ORIGINS)
 
