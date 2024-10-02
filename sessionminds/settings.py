@@ -107,8 +107,8 @@ TEMPLATES = [
 WSGI_APPLICATION = "sessionminds.wsgi.application"
 
 # CORS settings
-CORS_ALLOWED_ORIGINS = env.list("ALLOWED_ORIGINS")
-
+CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[])
+CORS_ALLOW_CREDENTIALS = True
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
