@@ -10,7 +10,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 environ.Env.read_env()
 
-env_file = os.path.join(BASE_DIR, '.env')
+env_file = os.path.join(BASE_DIR, ".env")
 environ.Env.read_env(env_file)
 
 
@@ -108,8 +108,6 @@ WSGI_APPLICATION = "sessionminds.wsgi.application"
 
 # CORS settings
 CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS")
-
-print("CORS_ALLOWED_ORIGINS: ", CORS_ALLOWED_ORIGINS)
 
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_METHODS = [
@@ -223,6 +221,9 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
+    "DEFAULT_RENDERER_CLASSES": [
+        "rest_framework.renderers.JSONRenderer",
+    ],
     "DEFAULT_PAGINATION_CLASS":
         "sessionminds.pagination.CustomPageNumberPagination",
     "PAGE_SIZE": 10,
@@ -245,10 +246,5 @@ SIMPLE_JWT = {
 REST_AUTH_SERIALIZERS = {
     "USER_DETAILS_SERIALIZER": "sessionminds.serializers.CurrenUserSerializer"
 }
-
-if "DEV" in os.environ:
-    REST_FRAMEWORK["DEFAULT_RENDERER_CLASS"] = [
-        "rest_framework.renderers.JSONRenderer"
-    ]
 
 ACCOUNT_EMAIL_VERIFICATION = "none"

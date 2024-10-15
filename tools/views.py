@@ -28,13 +28,19 @@ class ToolList(APIView):
     def get(self, request):
 
         ordering = request.query_params.get("ordering", "latest")
+        search_query = request.query_params.get("search", "").strip()
 
+        # Order tools by votes or latest
         if ordering == "votes":
             tools = Tool.objects.annotate(
                 vote_count=Count("votes")
                 ).order_by("-vote_count")
         else:
             tools = Tool.objects.all().order_by("-created")
+
+        # Filter tools by search query
+        if search_query:
+            tools = tools.filter(title__icontains=search_query)
 
         paginator = CustomPageNumberPagination()
         paginated_tools = paginator.paginate_queryset(tools, request)
