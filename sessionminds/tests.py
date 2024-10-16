@@ -6,7 +6,6 @@ from freezegun import freeze_time
 
 class JWTTokenTest(APITestCase):
     def setUp(self):
-        print("\n \n \n JWT Token Test Setup")
         # Test data for a user
         self.user_data = {
             "email": "testuser@example.com",

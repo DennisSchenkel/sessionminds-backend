@@ -7,6 +7,7 @@ from PIL import Image
 from .models import Profile
 
 
+# Profile serializer
 class ProfileSerializer(serializers.ModelSerializer):
     user = serializers.ReadOnlyField(source="user.username")
     is_owner = serializers.SerializerMethodField()
@@ -24,6 +25,7 @@ class ProfileSerializer(serializers.ModelSerializer):
         request = self.context["request"]
         return request.user == obj.user
 
+    # Custom validation for the image field
     def validate_image(self, value):
         if value.size > 2 * 1024 * 1024:
             raise serializers.ValidationError(
@@ -79,16 +81,26 @@ class ProfileSerializer(serializers.ModelSerializer):
             "is_owner",
             ]
 
+    # Access the annotated value in the queryset for tool count
     def get_tool_count(self, obj):
-        # Access the annotated value in the queryset
         return getattr(obj, "annotated_tool_count", 0)
 
+    # Access the annotated value in the queryset for total votes
     def get_total_votes(self, obj):
-        # Access the annotated value in the queryset
         return getattr(obj, "annotated_total_votes", 0)
 
 
+# User serializer
 class UserSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the User model.
+
+    Args:
+        serializers.ModelSerializer: The base serializer class.
+
+    Returns:
+        UserSerializer: The serialized User object.
+    """
     email = serializers.EmailField()
     username = serializers.CharField()
 
@@ -103,7 +115,18 @@ class UserSerializer(serializers.ModelSerializer):
             "date_joined",
             ]
 
+    # Override the update method to handle email and username
     def update(self, instance, validated_data):
+        """
+        Update the user's email and username.
+
+        Args:
+            instance (object): The User object to update.
+            validated_data (dict): The validated data to update the User object
+
+        Returns:
+            User: The updated User object.
+        """
         email = validated_data.get("email", instance.email).lower()
         username = validated_data.get("username", instance.username).lower()
         instance.username = username
@@ -114,7 +137,20 @@ class UserSerializer(serializers.ModelSerializer):
         return instance
 
 
+# Registration serializer
 class RegistrationSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the registration of a new user.
+
+    Args:
+        serializers.ModelSerializer: The base serializer class
+
+    Raises:
+        serializers.ValidationError: If the passwords do not match
+
+    Returns:
+        RegistrationSerializer: The serialized User object.
+    """
     email = serializers.EmailField(
         required=True,
         validators=[
@@ -140,14 +176,17 @@ class RegistrationSerializer(serializers.ModelSerializer):
         model = User
         fields = ("email", "password", "passwordConf")
 
+    # Validate the email field
     def validate_email(self, value):
         return value.lower()
 
+    # Validate the password fields
     def validate(self, data):
         if data["password"] != data["passwordConf"]:
             raise serializers.ValidationError("Passwords do not match.")
         return data
 
+    # Create a new user
     def create(self, validated_data):
         validated_data.pop("passwordConf")
         user = User.objects.create_user(
@@ -158,10 +197,24 @@ class RegistrationSerializer(serializers.ModelSerializer):
         return user
 
 
+# Login serializer
 class LoginSerializer(serializers.Serializer):
+    """
+    Serializer for user login.
+
+    Args:
+        serializers.Serializer: The base serializer class.
+
+    Raises:
+        serializers.ValidationError: If the credentials are invalid.
+
+    Returns:
+        LoginSerializer: The serialized User object.
+    """
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
 
+    # Validate the email and password fields
     def validate(self, data):
         email = data.get("email").lower()
         password = data.get("password")

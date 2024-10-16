@@ -20,13 +20,14 @@ class ToolList(APIView):
     Methods:
         get(request):
             Retrieves all tools and returns serialized data.
+        post(request):
+            Creates a new tool and returns serialized data.
     """
-
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = ToolSerializer
 
+    # Get all tools
     def get(self, request):
-
         ordering = request.query_params.get("ordering", "latest")
         search_query = request.query_params.get("search", "").strip()
 
@@ -50,6 +51,7 @@ class ToolList(APIView):
             )
         return paginator.get_paginated_response(serializer.data)
 
+    # Create a new tool
     def post(self, request):
         serializer = ToolSerializer(
             data=request.data,
@@ -68,12 +70,12 @@ class ToolListByUser(generics.ListAPIView):
     Methods:
         get_queryset():
             Retrieves all tools by user and returns serialized data.
-
     """
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     serializer_class = ToolSerializer
     pagination_class = CustomPageNumberPagination
 
+    # Get tools by user id
     def get_queryset(self):
         user_id = self.kwargs.get("user_id")
         return Tool.objects.filter(user__id=user_id)
@@ -88,8 +90,11 @@ class ToolDetailById(APIView):
     Methods:
         get(request, id):
             Retrieves a single tool and returns serialized data.
+        put(request, id):
+            Updates a single tool and returns serialized data.
+        delete(request, id):
+            Deletes a single tool and returns a 204 response.
     """
-
     permission_classes = [IsOwnerOrReadOnly]
     serializer_class = ToolSerializer
 
@@ -142,6 +147,10 @@ class ToolDetailBySlug(APIView):
     Methods:
         get(request, slug):
             Retrieves a single tool and returns serialized data.
+        put(request, slug):
+            Updates a single tool and returns serialized data.
+        delete(request, slug):
+            Deletes a single tool and returns a 204 response.
     """
 
     permission_classes = [IsOwnerOrReadOnly]

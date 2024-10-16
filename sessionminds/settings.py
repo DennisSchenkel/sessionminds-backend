@@ -10,9 +10,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 env = environ.Env()
 environ.Env.read_env()
 
+# Read environment variables from .env file
 env_file = os.path.join(BASE_DIR, ".env")
 environ.Env.read_env(env_file)
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -26,16 +26,7 @@ DEBUG = env.bool("DEBUG", default=False)
 # Test environment variable
 TEST = False
 
-if DEBUG:
-    print("WARNING: DEBUG mode is ON")
-else:
-    print("DEBUG mode is off")
-
-if TEST is True:
-    print("WARNING: TEST mode is ON")
-else:
-    print("TEST mode is off")
-
+# Allowed hosts
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
 
 # Application definition
@@ -73,6 +64,7 @@ INSTALLED_APPS = [
 
 SITE_ID = 1
 
+# Middleware settings
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -86,8 +78,10 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware"
 ]
 
+# Root URL configuration
 ROOT_URLCONF = "sessionminds.urls"
 
+# Template settings
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
@@ -109,7 +103,10 @@ WSGI_APPLICATION = "sessionminds.wsgi.application"
 # CORS settings
 CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS")
 
+# Allow credentials for CORS
 CORS_ALLOW_CREDENTIALS = True
+
+# Set the allowed methods for CORS
 CORS_ALLOWED_METHODS = [
     "DELETE",
     "GET",
@@ -118,6 +115,8 @@ CORS_ALLOWED_METHODS = [
     "POST",
     "PUT",
 ]
+
+# Set the allowed headers for CORS
 CORS_ALLOWED_HEADERS = [
     "accept",
     "accept-encoding",
@@ -217,6 +216,7 @@ CLOUDINARY_STORAGE = {
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+# Rest framework settings
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
@@ -230,6 +230,7 @@ REST_FRAMEWORK = {
     "DATETIME_FORMAT": "%d/%b/%Y",
 }
 
+# Simple JWT settings
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
@@ -243,8 +244,10 @@ SIMPLE_JWT = {
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
 }
 
+# Django REST Auth settings
 REST_AUTH_SERIALIZERS = {
     "USER_DETAILS_SERIALIZER": "sessionminds.serializers.CurrenUserSerializer"
 }
 
+# Allauth settings
 ACCOUNT_EMAIL_VERIFICATION = "none"

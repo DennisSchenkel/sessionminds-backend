@@ -13,6 +13,8 @@ class Icon(models.Model):
     Methods:
         __str__(): Returns the title of the icon.
 
+    Returns:
+        Icon: An instance of the Icon class.
     """
     id = models.AutoField(primary_key=True)
     title = models.CharField(unique=True, max_length=100)
@@ -29,10 +31,17 @@ class Topic(models.Model):
     Attributes:
         title (str): The title of the topic.
         description (str): The description of the topic.
-        icon (Icon): The icon associated with the topic.
-        slug (str): The slug for the topic.
+        icon (ForeignKey): The icon associated with the topic.
+        slug (str): The slug field for the topic.
         created (datetime): Date and time when the topic was created.
         updated (datetime): Date and time when the topic was last updated.
+
+    Methods:
+        save(): Saves the topic to the database.
+        __str__(): Returns the title of the topic.
+
+    Returns:
+        Topic: An instance of the Topic class.
     """
 
     title = models.CharField(max_length=100, unique=True)

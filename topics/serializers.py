@@ -3,6 +3,12 @@ from .models import Topic, Icon
 
 
 class IconSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Icon model.
+
+    Args:
+        serializers.ModelSerializer: The base serializer class.
+    """
 
     class Meta:
         model = Icon
@@ -14,6 +20,15 @@ class IconSerializer(serializers.ModelSerializer):
 
 
 class TopicSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Topic model.
+
+    Args:
+        serializers.ModelSerializer: The base serializer class.
+
+    Returns:
+        TopicSerializer: The serialized Topic object.
+    """
     icon = IconSerializer(read_only=True)
     tool_count = serializers.SerializerMethodField()
 
@@ -28,5 +43,6 @@ class TopicSerializer(serializers.ModelSerializer):
             "icon",
             ]
 
+    # Get the number of tools associated with the topic
     def get_tool_count(self, obj):
         return obj.tools.count()

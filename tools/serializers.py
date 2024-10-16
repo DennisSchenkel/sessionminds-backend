@@ -7,6 +7,15 @@ from comments.serializers import CommentSerializer
 
 
 class ToolSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Tool model.
+
+    Args:
+        serializers.ModelSerializer: The base serializer class.
+
+    Returns:
+        ToolSerializer: The serialized Tool object.
+    """
     is_owner = serializers.SerializerMethodField()
     user = serializers.ReadOnlyField(source="user.username")
     profile = ProfileSerializer(source="user.profile", read_only=True)

@@ -13,8 +13,11 @@ class Profile(models.Model):
         models (django.db.models.Model):
             The base model class provided by Django.
 
-    Returns:
-        Profile: An instance of the Profile class.
+    Methods:
+        create_profile(sender, instance, created, **kwargs):
+            Create a profile for a newly created user.
+        save(*args, **kwargs):
+            Generate a slug for the profile on save
 
     Attributes:
         user (django.contrib.auth.models.User):
@@ -33,6 +36,15 @@ class Profile(models.Model):
             The LinkedIn profile URL of the user.
         image (django.db.models.ImageField):
             An image associated with the user's profile.
+        tool_count (int):
+            The number of tools created by the user.
+        total_votes (int):
+            The total number of votes received by the user.
+        slug (str):
+            The slug field for the profile.
+
+    Returns:
+        Profile: An instance of the Profile class.
     """
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -74,6 +86,14 @@ class Profile(models.Model):
             created (bool):
                 A boolean indicating whether the user was just created.
 
+        Method:
+            Profile.objects.create(user=instance):
+                Create a profile for the newly created user
+
+        Attributes:
+            user (django.contrib.auth.models.User):
+                The user associated with the profile.
+
         Returns:
             None
         """
@@ -106,7 +126,28 @@ class Profile(models.Model):
     post_save.connect(create_profile, sender=User)
 
 
+# Model for storing blacklisted tokens
 class BlacklistedToken(models.Model):
+    """
+    Represents a blacklisted token.
+
+    Args:
+        models (django.db.models.Model):
+        The base model class provided by Django.
+
+    Methods:
+        __str__():
+            Returns the token.
+
+    Attributes:
+        token (django.db.models.TextField):
+            The token to be blacklisted.
+        blacklisted_at (django.db.models.DateTimeField):
+            The date and time when the token was blacklisted.
+
+    Returns:
+        BlacklistedToken: An instance of the BlacklistedToken class.
+    """
     token = models.TextField(max_length=500, unique=True)
     blacklisted_at = models.DateTimeField(auto_now_add=True)
 

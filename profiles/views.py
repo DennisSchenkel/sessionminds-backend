@@ -33,6 +33,7 @@ class ProfileList(APIView):
     permission_classes = [IsOwnerOrReadOnly]
     serializer_class = ProfileSerializer
 
+    # Get all profiles
     def get(self, request):
         ordering = self.request.query_params.get("ordering", "tools")
 
@@ -63,7 +64,6 @@ class ProfileDetail(APIView):
         get(request, id):
             Get profile by ID and return it.
     """
-
     permission_classes = [IsOwnerOrReadOnly]
     serializer_class = ProfileSerializer
     parser_classes = [MultiPartParser, FormParser]
@@ -71,6 +71,18 @@ class ProfileDetail(APIView):
     # Check if profile exists and return it or return 404
     # This method is only to validate the profile exists
     def get_object(self, id):
+        """
+        Check if a profile exists and return it or raise Http404.
+
+        Args:
+            id (int): The primary key of the profile to retrieve.
+
+        Raises:
+            Http404: If the profile with the given primary key does not exist.
+
+        Returns:
+            Profile: The profile object.
+        """
         try:
             profile = Profile.objects.get(id=id)
             self.check_object_permissions(self.request, profile)
@@ -81,16 +93,6 @@ class ProfileDetail(APIView):
     # Get profile by id and return it
     # If profile does exist, return it so it can be used
     def get(self, request, id):
-        """
-        Retrieve a specific profile.
-
-        Args:
-            request (HttpRequest): The HTTP request object.
-            id (int): The primary key of the profile to retrieve.
-
-        Returns:
-            Response: The serialized profile data.
-        """
         profile = self.get_object(id)
         serializer = ProfileSerializer(
             profile, context={"request": request})
@@ -143,15 +145,36 @@ class ProfileDetail(APIView):
 
 # Get single profile by user id
 class UserProfileView(APIView):
+    """
+    A view to retrieve a specific profile by user ID.
+
+    Args:
+        APIView: Inherits from APIView class.
+
+    Returns:
+        UserProfileView: The view to retrieve a specific profile by user ID.
+    """
     permission_classes = [IsOwnerOrReadOnly]
 
+    # Get profile by user id
     def get(self, request, id):
         user = get_object_or_404(User, id=id)
         profile = get_object_or_404(Profile, user=user)
         serializer = ProfileSerializer(profile, context={"request": request})
         return Response(serializer.data)
 
+    # Update profile by user id
     def put(self, request, id):
+        """
+        Update an existing profile by user ID.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            id (int): The primary key of the user to update the profile for.
+
+        Returns:
+            Response: The updated profile data.
+        """
         user = get_object_or_404(User, id=id)
         profile = get_object_or_404(Profile, user=user)
         serializer = ProfileSerializer(
@@ -165,8 +188,25 @@ class UserProfileView(APIView):
 
 # Get single profile by user slug
 class UserProfileViewSlug(APIView):
+    """
+    A view to retrieve a specific profile by user slug.
 
+    Args:
+        APIView: Inherits from APIView class.
+    """
+
+    # Get profile by user slug
     def get(self, request, slug):
+        """
+        Retrieve a specific profile by user slug.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            slug (str): The slug of the user to retrieve the profile for.
+
+        Returns:
+            Response: The serialized profile data.
+        """
         profile = get_object_or_404(Profile, slug=slug)
         serializer = ProfileSerializer(profile, context={"request": request})
         return Response(serializer.data)
@@ -174,8 +214,18 @@ class UserProfileViewSlug(APIView):
 
 # Get a list of all users
 class UsersListView(APIView):
+    """
+    A view to retrieve a list of users
+
+    Args:
+        APIView: Inherits from APIView class.
+
+    Returns:
+        UsersListView: The view to retrieve a list of users.
+    """
     permission_classes = [IsOwnerOrReadOnly]
 
+    # Get all users
     def get(self, request):
         users = User.objects.all()
         serializer = UserSerializer(users, many=True)
@@ -184,8 +234,18 @@ class UsersListView(APIView):
 
 # Get a single user by user id
 class UserDetailView(APIView):
+    """
+    A view to retrieve a specific user by user ID.
+
+    Args:
+        APIView: Inherits from APIView class.
+
+    Returns:
+        UserDetailView: The view to retrieve a specific user by user ID.
+    """
     permission_classes = [IsOwnerOrReadOnly]
 
+    # Get a single user by user id
     def get(self, request, id):
         try:
             user = User.objects.get(id=id)
@@ -201,9 +261,29 @@ class UserDetailView(APIView):
 
 # Update user account
 class UserUpdateView(APIView):
+    """
+    A view to update a user account.
+
+    Args:
+        APIView: Inherits from APIView class.
+
+    Returns:
+        UserUpdateView: The view to update a user account.
+    """
     permission_classes = [IsOwnerOrReadOnly]
 
+    # Update user account
     def put(self, request, user_id):
+        """
+        Update a user account.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            user_id (int): The primary key of the user to update.
+
+        Returns:
+            Response: The updated user data.
+        """
         user = get_object_or_404(User, id=user_id)
         serializer = UserSerializer(user, data=request.data, partial=True)
         if serializer.is_valid():
@@ -216,10 +296,31 @@ class UserUpdateView(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+# Delete user account
 class UserDeleteView(APIView):
+    """
+    A view to delete a user account
+
+    Args:
+        APIView: Inherits from APIView class.
+
+    Returns:
+        UserDeleteView: The view to delete a user account.
+    """
     permission_classes = [IsOwnerOrReadOnly]
 
+    # Delete user account
     def delete(self, request, id):
+        """
+        Delete a user account.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+            id (int): The primary key of the user to delete.
+
+        Returns:
+            Response: A 204 response indicating the user was deleted.
+        """
         user = get_object_or_404(User, id=id)
 
         if request.user != user:
@@ -234,9 +335,28 @@ class UserDeleteView(APIView):
 
 # Register new user
 class RegistrationView(generics.CreateAPIView):
+    """
+    A view to register a new user.
+
+    Args:
+        generics (CreateAPIView): Inherits from CreateAPIView class.
+
+    Returns:
+        RegistrationView: The view to register a new user.
+    """
     serializer_class = RegistrationSerializer
 
+    # Create a new user
     def create(self, request, *args, **kwargs):
+        """
+        Create a new user.
+
+        Args:
+            request (HttpRequest): The HTTP request object.
+
+        Returns:
+            Response: The new user data.
+        """
         serializer = self.get_serializer(data=request.data)
         try:
             serializer.is_valid(raise_exception=True)
@@ -257,10 +377,29 @@ class RegistrationView(generics.CreateAPIView):
 
 # Login user
 class LoginView(generics.GenericAPIView):
+    """
+    A view to login a user.
+
+    Args:
+        generics (GenericAPIView): Inherits from GenericAPIView class.
+
+    Returns:
+        LoginView: The view to login a user.
+    """
     permission_classes = [AllowAny]
     serializer_class = LoginSerializer
 
+    # Login user
     def post(self, request, *args, **kwargs):
+        """
+        Login a user.
+
+        Args:
+            request (HttpRequest): The HTTP request object
+
+        Returns:
+            Response: The JWT tokens for the user.
+        """
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
@@ -278,11 +417,30 @@ class LoginView(generics.GenericAPIView):
         }, status=status.HTTP_200_OK)
 
 
+# Logout user
 class LogoutView(APIView):
+    """
+    A view to logout a user.
+
+    Args:
+        APIView: Inherits from APIView class.
+
+    Returns:
+        LogoutView: The view to logout a user.
+    """
     permission_classes = [IsAuthenticated]
 
+    # Logout user
     def post(self, request, *args, **kwargs):
+        """
+        Logout a user and blacklist the refresh token.
 
+        Args:
+            request (HttpRequest): The HTTP request object.
+
+        Returns:
+            Response: A message indicating the user was logged out.
+        """
         # Blacklist the refresh token
         refresh_token = request.data.get("refreshToken")
         if refresh_token:
@@ -303,9 +461,19 @@ class LogoutView(APIView):
 
 # Protected view for testing token expiration
 class ProtectedView(APIView):
+    """
+    A protected view for testing token expiration.
+
+    Args:
+        APIView: Inherits from APIView class.
+
+    Returns:
+        ProtectedView: The protected view for testing token expiration.
+    """
     authentication_classes = [JWTAuthentication]
     permission_classes = [IsAuthenticated]
 
+    # Get protected view
     def get(self, request):
         return Response({
             "message": "You have access to this protected endpoint!"
