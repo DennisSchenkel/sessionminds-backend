@@ -1,3 +1,5 @@
+[Documentation for the Frontend can be found here!](https://github.com/DennisSchenkel/sessionminds-frontend)
+
 # Session Minds Backend API Documentation
 
 ## Development
@@ -87,20 +89,57 @@ Models
 - Use app
   <br>
 
-[The deployed version can be found here!](https://sessionminds-be-f5283499a47c.herokuapp.com/)
+[The deployed API can be found here!](https://sessionminds-be-f5283499a47c.herokuapp.com/)
 <br>
 
 ### Testing
 
-**(BE) 405 Get method now allowed**
+#### Issues During Development
 
-When setting up the backend django rest framework and loading the API URLs using a browser, the PUT and POST views were showing the 405 method and stating, that I was doing a GET request<br>
-Nevertheless, I was able to create and update new entries.<br>
-This issue continues to happen, but I tried if calling the API using the frontend would lead to a flawless behavior.<br>
+The following backend related issues came up during development but where solved.
 
-**(BE) 403 HTTP 403 Forbidden**
+**405 Get method now allowed**
 
-Message shown: "CSRF Failed: CSRF token missing"
+Issue:<br>
+When setting up the backend Django Rest Framework and loading the API URLs using a browser, views that only existed for PUT and POST were showing the 405 "Method not allowed" error and stating, that a GET request was made.<br>
+Nevertheless, creating and updating entries was possible.<br>
+This issue continued to happen, but trying to call the API using the frontend would lead to a flawless behavior.<br>
 
-When using the Django Rest Framework API Frontend, Updating and Deleting of content is not possible. This might be due to the wrong authentication methode used.
-When using the API with JWT, everything works just finde.
+Solution:<br>
+The issue seams to stem from using the Django Rest Framework and creating views for only PUT and POST without a GET method. When opening the API endpoint in a browser, a GET request is automatically conducted and the mentioned error is thrown.<br>
+Since these views are never to be used directly from a browser, this issue is no not of relevance, but that was a lesson to be learned.<br>
+
+**403 HTTP 403 Forbidden**
+
+Issue:<br>
+At the beginning of the project the CSRF method for authentication was used and implemented for using the browser view of the Django Rest Framework. Creating, editing and deleting entries was no issue using this approach.
+With adding the frontend application, the authentication method was not implemented correctly. The backend was still using CSRF and the frontend was using JWT for authentication.
+This leed to the following message showing when trying to update or delete database entries: "CSRF Failed: CSRF token missing"<br>
+
+Solution:<br>
+With implementing JWT in the frontend application and making sure the headers are correct, everything worked just finde.
+
+**Athentication token not deleting**
+Issue:<br>
+When testing the behavior of the access and the refresh token, an error occurred, showing that the refresh token was valid after its lifetime.<br>
+
+Solution:<br>
+A function was created that explicitly checks for the lifetime of the refresh token and blacklists it if the lifetime is excited.<br>
+
+**Login with wrong credentials not showing error & not loading next page**
+
+Issue:<br>
+During the development, a modal was used to show the login form. When entering wrong credentials and pressing enter, the modal closed, and the home page was loaded.<br>
+Although the wrong login credentials were used, no error was retuned by the API and no error was shown in the login form, that itself disappeared with the closing of the modal.<br>
+
+Solution:<br>
+In the backend, the login view was updated and an error response for wrong login credentials was added.<br>
+In the frontend, the login modal was exchanged with a complete login page that can not close like a modal, when the form is submitted. Due to not closing the modal with the form, the newly created backend response was used for showing the expected error message.<br>
+
+## Credits
+
+### Code Sources
+
+**Profile App (BE)**
+
+In this project, the Django profile app with its structure is greatly inspired and by part copied from the Code Institute examples, although customized in many places.
