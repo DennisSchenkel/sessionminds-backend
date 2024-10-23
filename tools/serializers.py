@@ -41,7 +41,7 @@ class ToolSerializer(serializers.ModelSerializer):
     def get_vote_count(self, obj):
         return obj.votes.count()
 
-    # Override the create method to handle topic_ids field
+    # Override the create method to handle topic_id field
     def create(self, validated_data):
         topic = validated_data.pop("topic_id", None)
         user = self.context["request"].user
@@ -51,7 +51,7 @@ class ToolSerializer(serializers.ModelSerializer):
             tool.save()
         return tool
 
-    # Override the update method to handle topic_ids field
+    # Override the update method to handle topic_id field
     def update(self, instance, validated_data):
         topic = validated_data.pop("topic_id", None)
         instance = super().update(instance, validated_data)

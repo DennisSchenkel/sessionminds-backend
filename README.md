@@ -1,28 +1,149 @@
+# Session Minds Backend API Documentation
+
+This documentation covers the backend and API build with Django and Django Rest Framework.<br>
+
 [Documentation for the Frontend can be found here!](https://github.com/DennisSchenkel/sessionminds-frontend)
 
-# Session Minds Backend API Documentation
+## Introduction
+
+Code Institute - Portfolio Project 5 - Advanced Frontend with React<br>
+
+[This paragraph can be found in the frontend documentation](https://github.com/DennisSchenkel/sessionminds-frontend?tab=readme-ov-file#introduction)
+
+[The deployed API can be found here!](https://sessionminds-be-f5283499a47c.herokuapp.com/)
+
+<br>
+
+## Table of Contents
+
+- [Introduction](#introduction)
+
+- [Use Case](#use-case)
+- [User Experience](#user-experience)
+- [Agile Project Management](#agile-project-management)
+- [Development](#development)
+  - [Technologies Used](#technologies-used)
+    - [Languages](#languages)
+    - [Frameworks](#frameworks)
+    - [Modules, Libraries & Plugins](#mudules-libraries--plugins)
+    - [Programs & Tools](#programs--tools)
+  - [Deployment](#deployment)
+    - [Version Control](#version-control)
+    - [Cloudinary](#cloudinary)
+    - [Database Deployment](#database-deployment)
+    - [Heroku Deployment](#heroku-deployment)
+  - [Database](#database)
+  - [Testing](#testing)
+    - [Validator Testing](#validator-testing)
+    - [Automated Testing](#automated-testing)
+    - [Manual Testing](#manual-testing)
+    - [Possible Improvements](#possible-improvements)
+    - [Issues During Development](#issues-during-development)
+    - [Known Unfixed Bugs](#known-unfixed-bugs)
+- [Credits](#credits)
+  - [Resources](#resources)
+  - [Acknowledgements](#acknowledgements)
+
+## Use Case
+
+[This paragraph can be found in the frontend documentation](https://github.com/DennisSchenkel/sessionminds-frontend?tab=readme-ov-file#use-case)
+
+## User Experience
+
+[This paragraph can be found in the frontend documentation](https://github.com/DennisSchenkel/sessionminds-frontend?tab=readme-ov-file#user-experience)
+
+## Agile Project Management
+
+[This paragraph can be found in the frontend documentation](https://github.com/DennisSchenkel/sessionminds-frontend?tab=readme-ov-file#agile-project-management)
 
 ## Development
 
-### Database
+### Technologies Used
 
-Models
+During the development of this application, the following programs and tools have been used.<br>
+<br>
 
-**Profiles**
+- [CI Postgres Database](https://dbs.ci-dbs.net/) (Used for database hosting)
+- [Cloudinary](https://cloudinary.com/) (As external hosting services for images)
+- [dbdiagram.io](https://dbdiagram.io/) (Creating database visualization)
+- [DBeaver](https://dbeaver.io/) (For database inspection and manipulation)
+- [Git](https://git-scm.com/) (Version control)
+- [GitHub](https://github.com/) (Used as cloud repository)
+- [Google Chrome Dev Tools](https://developer.chrome.com/) (Working with console and HTML output)
+- [Heroku](https://www.heroku.com/home) (Deployment of final application)
+- [Postman](https://www.postman.com/) (For API testing)
+- [Visual Studio Code](https://code.visualstudio.com/) (IDE - Integrated Development Environment)
 
-**Tools**
+#### Languages
 
-**Topics**
+The following languages have been used.<br>
+<br>
 
-**Icons**
+- Python
 
-**Votes**
+#### Frameworks
 
-**Comments**
+The following frameworks have been used.<br>
+<br>
 
-**Blacklistet Tokens**
+- Django
+- Django Rest Framework
+
+#### Modules, Libraries & Plugins
+
+The following modules, libraries and plugins have been used.<br>
+<br>
+
+- AllAuth (For user uthentication)
+- Black (Code formatter for Python)
+- Cloudinary (Cloud storage for images)
+- Gunicorn (Python WSGI HTTP server for UNIX)
+- OS (For operating system interaction)
+- Pep8 (Check Python code for PEP8 conventions)
+- Pillow (For image processing)
+- Prettier (Code formatter for JavaScript)
+- Psycopg 2 (PostgreSQL adapter for the database)
+- Python Slugify (For generating url-slugs)
+- Summernote (As a WYSIWYG editor)
+- Whitenoise (Middleware for serving static files)
+
+#### Programs & Tools
 
 ### Deployment
+
+#### Version Control
+
+This application was developed using Visual Studio Code as the IDE and GitHub for hosting the repository.<br>
+<br>
+Git was used for version control by using the following comments:<br>
+<br>
+
+- git add filename - Select the files that should be uploaded and updated to the GitHub repository.
+- git commit -m "commit message" - Commenting the commit to better understand the changes in this specific commit.
+- git push - Upload the commit to GitHub.
+
+#### Cloudinary
+
+For using Cloudinary as a hosting provider for images, the following steps have to be conducted:<br>
+<br>
+
+- Create a Cloudinary account.
+- Login and visit the Cloudinary user account.
+- On the bottom left side, click on the gear symbol.
+- On the top left, click on "API Keys".
+- Click "Generate New API Key" on the top right.
+- Update the Django settings.py with API key.
+- Use the API in the Heroku deployment settings like described in the next step.
+
+#### Database Deployment
+
+The database for this project was deployed with the help of the [Code Institute Database Maker](https://dbs.ci-dbs.net/).
+
+- **Step 1:** As a student of Code Institute, the email address of the associated student account is entered into the form and sent.
+- **Step 2:** An email is sent with the link where all relevant information about the database can be found.
+- **Step 3:** Entering the database information into the Django settings and Heroku like mentioned below.
+
+<br>
 
 #### Heroku Deployment
 
@@ -92,7 +213,33 @@ Models
 [The deployed API can be found here!](https://sessionminds-be-f5283499a47c.herokuapp.com/)
 <br>
 
+### Database
+
+Models
+
+**Profiles**
+
+**Tools**
+
+**Topics**
+
+**Icons**
+
+**Votes**
+
+**Comments**
+
+**Blacklistet Tokens**
+
 ### Testing
+
+#### Validator Testing
+
+#### Automated Testing
+
+#### Manuel Testing
+
+#### Possible Improvements
 
 #### Issues During Development
 
@@ -136,10 +283,18 @@ Solution:<br>
 In the backend, the login view was updated and an error response for wrong login credentials was added.<br>
 In the frontend, the login modal was exchanged with a complete login page that can not close like a modal, when the form is submitted. Due to not closing the modal with the form, the newly created backend response was used for showing the expected error message.<br>
 
+#### Known Unfixed Bugs
+
 ## Credits
 
-### Code Sources
+### Resources
 
-**Profile App (BE)**
+- All content was written and created by Dennis Schenkel.<br>
+- In this project, the Django profile app with its structure is greatly inspired and by the Code Institute examples, although customized in many places.<br>
+- When trying to understand concepts and build this full-stack-application, an unlimited amount of Google searches were conducted and various sources like Stack Overflow, Reddit and the different documentations for Django, Bootstrap and React were used.<br>
 
-In this project, the Django profile app with its structure is greatly inspired and by part copied from the Code Institute examples, although customized in many places.
+### Acknowledgements
+
+- Thanks to Gareth McGirr for providing great mentorship as part of the Code Academy course.
+- Thanks to Kay for they effort as a facilitator of the Code Institute team.
+- Great thanks go to [Dajana Isbaner](https://github.com/queenisabaer) for being the best fellow student I could wish for.
