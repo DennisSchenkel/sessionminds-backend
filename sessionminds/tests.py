@@ -24,9 +24,9 @@ class JWTTokenTest(APITestCase):
         self.access_token = login_response.data["access"]
         self.refresh_token = login_response.data["refresh"]
 
+    # Test token lifespan
     def test_1_token_lifespan(self):
         print("\nTest 1: Token lifespan")
-        # Test token lifespan
         original_now = timezone.now
         timezone.now = lambda: original_now() + timedelta(minutes=1)
         # Refresh the token
@@ -65,27 +65,27 @@ class JWTTokenTest(APITestCase):
         else:
             self.fail("Refresh token was not returned")
 
+    # Test access with valid access token
     def test_2_access_with_valid_token(self):
         print("\nTest 2: Access with valid token")
-        # Test access with valid access token
         self.client.credentials(
             HTTP_AUTHORIZATION="Bearer " + self.access_token)
         response = self.client.get("/protected/")
         self.assertEqual(response.status_code, 200)
         print("Test passed \n")
 
+    # Test access with invalid access token
     def test_3_access_with_invalid_token(self):
         print("\nTest 3: Access with invalid token")
-        # Test access with invalid access token
         # Add invalid token to the request header instead of the valid token
         self.client.credentials(HTTP_AUTHORIZATION="Bearer " + "invalidtoken")
         response = self.client.get("/protected/")
         self.assertEqual(response.status_code, 401)
         print("Test passed \n")
 
+    # Test access with expired token
     def test_4_access_with_expired_token(self):
         print("\nTest 4: Access with expired token")
-        # Test access with valid access token
         self.client.credentials(
                 HTTP_AUTHORIZATION="Bearer " + self.access_token
                 )
@@ -112,10 +112,10 @@ class JWTTokenTest(APITestCase):
             self.assertEqual(response.status_code, 401)
             print("Test passed \n")
 
+    # Test refreshing access token with expired refresh token
     def test_5_refresh_token_expired(self):
         print("\nTest 5: Refresh token expired")
         with freeze_time(timezone.now() + timedelta(days=2)):
-            # Test refreshing access token with expired refresh token
             response = self.client.post(
                 "/api/token/refresh/",
                 {"refresh": self.refresh_token}
@@ -123,9 +123,9 @@ class JWTTokenTest(APITestCase):
             self.assertEqual(response.status_code, 401)
             print("Test passed \n")
 
+    # Test access with valid token
     def test_6_logout(self):
         print("\nTest 6: Logout")
-        # Test access with valid token
         self.client.credentials(
             HTTP_AUTHORIZATION="Bearer " + self.access_token
             )

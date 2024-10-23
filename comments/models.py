@@ -1,5 +1,6 @@
 from django.db import models
 from tools.models import Tool
+from django.contrib.auth.models import User
 
 
 # Comment model
@@ -25,7 +26,7 @@ class Comment(models.Model):
         Tool, on_delete=models.CASCADE, related_name="comments"
         )
     user = models.ForeignKey(
-        "auth.User", on_delete=models.CASCADE, related_name="comments"
+        User, on_delete=models.CASCADE, related_name="comments"
         )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
