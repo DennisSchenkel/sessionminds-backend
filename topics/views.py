@@ -3,9 +3,9 @@ from django.http import Http404
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from sessionminds.pagination import CustomPageNumberPagination
-from .serializers import TopicSerializer, IconSerializer
+from .serializers import TopicSerializer
 from tools.serializers import ToolSerializer
-from .models import Topic, Icon
+from .models import Topic
 from tools.models import Tool
 from rest_framework.permissions import AllowAny
 from rest_framework import permissions
@@ -206,27 +206,3 @@ class ToolsOfTopicBySlug(APIView):
             paginated_tools, many=True, context={"request": request}
             )
         return paginator.get_paginated_response(serializer.data)
-
-
-# Get all tools by category id
-class IconsList(APIView):
-    """
-    A view to retrieve a list of icons.
-
-    Args:
-        APIView: The base APIView class.
-    """
-
-    def get(self, request):
-        """
-        Retrieve a list of icons.
-
-        Args:
-            request (HttpRequest): The HTTP request object
-
-        Returns:
-            Response: The serialized icon data.
-        """
-        icons = Icon.objects.all()
-        serializer = IconSerializer(icons, many=True)
-        return Response(serializer.data)

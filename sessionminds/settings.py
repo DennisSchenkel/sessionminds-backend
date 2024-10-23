@@ -24,7 +24,7 @@ SECRET_KEY = env("SECRET_KEY")
 DEBUG = env.bool("DEBUG", default=False)
 
 # Test environment variable
-TEST = True
+TEST = False
 
 # Allowed hosts
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS")
