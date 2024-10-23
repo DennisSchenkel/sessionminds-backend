@@ -15,7 +15,7 @@ def update_profile_total_votes(profile):
     profile.total_votes = Vote.objects.filter(
         tool__user=profile.user
         ).count() or 0
-    profile.save(update_fields=['total_votes'])
+    profile.save(update_fields=["total_votes"])
 
 
 # Signal receiver to update the tool count for a user profile
@@ -29,7 +29,7 @@ def update_profile_tool_count(profile):
     profile.tool_count = Tool.objects.filter(
         user=profile.user
         ).count() or 0
-    profile.save(update_fields=['tool_count'])
+    profile.save(update_fields=["tool_count"])
 
 
 # Signal receivers to update the total votes and tool count for a user profile
