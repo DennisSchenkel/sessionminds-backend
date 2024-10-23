@@ -207,21 +207,21 @@ class VotesTest3VotesByTool(APITestCase):
         print("Test passed \n")
 
     # Test to get votes by tool with 50 votes
-#    def test_8_get_votes_by_tool_with_50_votes(self):
-#        print("\nVotes Test 8: Get votes by tool with 50 votes")
+    def test_8_get_votes_by_tool_with_50_votes(self):
+        print("\nVotes Test 8: Get votes by tool with 50 votes")
         # Create 500 votes with different users
-#        for i in range(500):
-#            user = User.objects.create_user(
-#                username=f"user{i}@example.com",
-#                email=f"user{i}@example.com",
-#                password="TestUser1234!!"
-#            )
-#            Vote.objects.create(user=user, tool=self.tool)
-#        response = self.client.get(
-#            f"/votes/tool/{self.tool.id}/", format="json"
-#            )
-#        self.assertEqual(response.status_code, status.HTTP_200_OK)
-#        # Check if user has voted
-#        self.assertFalse(response.data["user_has_voted"])
-#        self.assertIsNone(response.data["vote_id"])
-#        print("Test passed \n")
+        for i in range(500):
+            user = User.objects.create_user(
+                username=f"user{i}@example.com",
+                email=f"user{i}@example.com",
+                password="TestUser1234!!"
+            )
+            Vote.objects.create(user=user, tool=self.tool)
+        response = self.client.get(
+            f"/votes/tool/{self.tool.id}/", format="json"
+            )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        # Check if user has voted
+        self.assertFalse(response.data["user_has_voted"])
+        self.assertIsNone(response.data["vote_id"])
+        print("Test passed \n")

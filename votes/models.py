@@ -22,7 +22,7 @@ class Vote(models.Model):
 
     # Ensure that a user can only vote once for a tool
     class Meta:
-        ordering = ['-created']
+        ordering = ["-created"]
         unique_together = ["user", "tool"]
 
     def __str__(self):
