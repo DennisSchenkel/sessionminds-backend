@@ -17,7 +17,7 @@ class TopicsTest1ListView(APITestCase):
         print("\nTopics Test 1: Get all topics")
         response = self.client.get("/topics/", format="json")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data['results']), 2)
+        self.assertEqual(len(response.data["results"]), 2)
         print("Test passed \n")
 
 
@@ -36,7 +36,7 @@ class TopicsTest2DetailsBySlug(APITestCase):
             f"/topics/{self.topic.slug}/", format="json"
             )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data['title'], "Unique Topic")
+        self.assertEqual(response.data["title"], "Unique Topic")
         print("Test passed \n")
 
 
@@ -76,5 +76,5 @@ class TopicsTest3ToolsOfTopicBySlugTest(APITestCase):
             f"/topics/list/{self.topic.slug}/", format="json"
             )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data['results']), 2)
+        self.assertEqual(len(response.data["results"]), 2)
         print("Test passed \n")
