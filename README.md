@@ -36,7 +36,7 @@ Code Institute - Portfolio Project 5 - Advanced Frontend with React<br>
   - [Testing](#testing)
     - [Validator Testing](#validator-testing)
     - [Automated Testing](#automated-testing)
-    - [Manual Testing](#manual-testing)
+    - [Manual API Testing](#manual-api-testing)
     - [Possible Improvements](#possible-improvements)
     - [Issues During Development](#issues-during-development)
     - [Known Unfixed Bugs](#known-unfixed-bugs)
@@ -215,7 +215,7 @@ The database for this project was deployed with the help of the [Code Institute 
 
 ### Database
 
-**Models**
+This section provides a detailed explanation of the custom models in the application, covering the fields in the database tables, how the serializers work, and the functionality of the views.
 
 <details>
 <summary>User</summary>
@@ -298,6 +298,7 @@ These views help with tool management, checking ownership, permissions, and supp
 <br>
 
 The Topic and Icon models are for categorizing tools and giving these categories(topics) visual icons. Here’s an overview:
+<br>
 
 **Topic Model**
 
@@ -309,6 +310,7 @@ The Topic model categorizes tools. It includes the following fields:
 **Slug** (auto-set): A unique, URL-friendly identifier created from the title.<br>
 **Created** (auto-set): Timestamp for when the topic was created.<br>
 **Updated** (auto-set): Timestamp for when the topic was updated.<br>
+<br>
 
 **Icon Model**
 
@@ -404,6 +406,69 @@ The following database diagram was created using DBeaver.
 
 #### Validator Testing
 
+During the development, Flake8 as a plugin for VScode was used to ensure code quality and formatting conventions.
+Nevertheless, the code for each python file was tested manually with the CI Python Linter.
+
+<details>
+<summary>Sessionminds</summary>
+<br>
+
+No errors were found using the CI Python Linter for the project.
+
+![CI Python Linter Results - Sessionminds](/documentation/images/sessionminds-linter.png)
+
+<details>
+
+<details>
+<summary>Profiles</summary>
+<br>
+
+No errors were found using the CI Python Linter for this app.
+
+![CI Python Linter Results - Profile](/documentation/images/profiles-linter.png)
+
+<details>
+
+<details>
+<summary>Tools</summary>
+<br>
+
+No errors were found using the CI Python Linter for this app.
+
+![CI Python Linter Results - Tools](/documentation/images/tools-linter.png)
+
+<details>
+
+<details>
+<summary>Topics</summary>
+<br>
+
+No errors were found using the CI Python Linter for this app.
+
+![CI Python Linter Results - Topics](/documentation/images/topics-linter.png)
+
+<details>
+
+<details>
+<summary>Votes</summary>
+<br>
+
+No errors were found using the CI Python Linter for this app.
+
+![CI Python Linter Results - Votes](/documentation/images/votes-linter.png)
+
+<details>
+
+<details>
+<summary>Comments</summary>
+<br>
+
+No errors were found using the CI Python Linter for this app.
+
+![CI Python Linter Results - Comments](/documentation/images/comments-linter.png)
+
+<details>
+
 #### Automated Testing
 
 For this backend/API project were 33 written and passed successfully.
@@ -424,7 +489,7 @@ For this backend/API project were 33 written and passed successfully.
 The automated test for this project were mostly written towards the end of the project. When writing the tests, some minor issues came up, like an authentication issue for deleting comments.<br>
 In future projects, the test will be written directly with the application itself like thought in the CI material, to prevent bigger issues from the ground up.
 
-#### Manuel Testing
+#### Manuel API Testing
 
 #### Possible Improvements
 
