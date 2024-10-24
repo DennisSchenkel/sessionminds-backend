@@ -210,7 +210,7 @@ class VotesTest3VotesByTool(APITestCase):
     def test_8_get_votes_by_tool_with_50_votes(self):
         print("\nVotes Test 8: Get votes by tool with 50 votes")
         # Create 500 votes with different users
-        for i in range(500):
+        for i in range(50):
             user = User.objects.create_user(
                 username=f"user{i}@example.com",
                 email=f"user{i}@example.com",

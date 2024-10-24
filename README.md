@@ -97,6 +97,7 @@ The following modules, libraries and plugins have been used.<br>
 - AllAuth (For user uthentication)
 - Black (Code formatter for Python)
 - Cloudinary (Cloud storage for images)
+- Flake8 (Python linter for formatting conventions)
 - Gunicorn (Python WSGI HTTP server for UNIX)
 - OS (For operating system interaction)
 - Pep8 (Check Python code for PEP8 conventions)
@@ -473,17 +474,160 @@ No errors were found using the CI Python Linter for this app.
 
 For this backend/API project were 33 written and passed successfully.
 
-- Authentication(Profile)
-
-- Tools
-
-- Topics
-
-- Votes
-
-- Comments
-
 ![Django Automated Testing](/documentation/images/django-automated-testing.png)
+
+More details about the individual test can be found below.
+
+<details>
+<summary>Authentication / Profiles</summary>
+<br>
+
+This set of tests focuses on testing the functionality of JWT tokens, including token lifespan, access, expiration, and logout processes. The tests cover the following scenarios:
+
+- **Token lifespan**:  
+  Ensures that the token can be refreshed and stays valid within its lifespan, allowing continued access to protected routes.
+
+- **Access with valid token**:  
+  Confirms that users with a valid access token can successfully access protected endpoints.
+
+- **Access with invalid token**:  
+  Verifies that users with an invalid access token are denied access to protected endpoints.
+
+- **Access with expired token**:  
+  Tests that an expired access token cannot be used to access protected routes, but a refreshed token allows access.
+
+- **Refresh token expired**:  
+  Ensures that an expired refresh token prevents further access and cannot generate a new access token.
+
+- **Logout and token blacklist**:  
+  Tests that logging out blacklists the refresh token and prevents it from being used to generate new access tokens, while access with the current valid access token works until it expires.
+
+</details>
+
+<details>
+<summary>Tools</summary>
+<br>
+
+This set of tests focuses on testing the tools functionality, including creating, retrieving, updating, and deleting tools. The tests cover the following scenarios:
+
+- **Get all tools**:  
+  Ensures that all available tools can be retrieved successfully.
+
+- **Create a tool as an authenticated user**:  
+  Verifies that a logged-in user can create a new tool.
+
+- **Create a tool without being logged in**:  
+   Check that unauthenticated users can't create tools.
+  <br>
+
+The second part of the tests covers the following scenarios:
+
+- **Get a tool by slug**:  
+  Verifies that a specific tool can be retrieved using its slug.
+
+- **Get a tool by ID**:  
+  Confirms that a tool can be retrieved by its ID.
+
+- **Update an existing tool as the owner**:  
+  Ensures that the tool owner can update their own tool.
+
+- **Delete a tool as the owner**:  
+  Verifies that the tool owner can delete their own tool.
+
+- **Update a tool without being the owner**:  
+  Ensures that users who do not own the tool are not able to update it.
+
+- **Delete a tool without being the owner**:  
+  Confirms that users who are not the owner of the tool are unable to delete it.
+
+</details>
+
+<details>
+<summary>Topics</summary>
+<br>
+
+This set of tests focuses on testing the topics functionality and retrieving tools by topic. The tests cover the following scenarios:
+
+- **Get all topics**:  
+  Ensures that all available topics can be retrieved.
+
+- **Get a topic by slug**:  
+  Verifies that a specific topic can be retrieved using its unique slug.
+
+- **Get all tools for a topic by slug**:  
+  Get all tools associated with a specific topic by using the topic's slug.
+
+</details>
+
+<details>
+<summary>Votes</summary>
+<br>
+
+This set of tests focuses on testing the votes functionality for tools. The tests cover the following scenarios:
+
+- **Get all votes**:  
+  Ensures that all votes can be retrieved, even as a not authenticated user.
+
+- **Create a vote as an authenticated user**:  
+  Verifies that a logged-in user can successfully vote on a tool.
+
+- **Create a vote as an unauthenticated user**:  
+  Ensures that unauthenticated users cannot vote on tools.
+
+<br>
+The second part of the tests covers the following scenarios:
+
+- **Retrieve a specific vote by ID**:  
+  Ensures that a specific vote can be retrieved by its ID.
+
+- **Delete a vote as the owner**:  
+  Ensures that the user who voted can successfully delete their vote.
+
+- **Delete a vote as a non-owner**:  
+  Confirms that users who did not vote cannot delete it.
+
+<br>
+The third part of the tests covers the following scenarios:
+
+- **Get votes by tool**:  
+  Verifies that votes for a specific tool can be retrieved and checks if the current user has voted.
+
+- **Get votes by tool with 50 votes**:  
+  Ensures that a tool with many votes (50 in this case) can still return all votes, while checking if the current user has voted.
+
+</details>
+
+<details>
+<summary>Comments</summary>
+<br>
+
+This set of test focuses on testing the comments functionality for tools. The tests cover the following scenarios:
+
+- **Create a comment as a user with names**:  
+  Ensures that a user with both a first and last name can successfully post a comment.
+
+- **Create a comment as a user without names**:  
+  Checks that users without a first or last name are not allowed to post comments.
+
+- **Create a comment as an unauthenticated user**:  
+  Ensures unauthenticated users cannot post comments.
+
+- **Retrieve all comments for a tool**:  
+  Verifies that all comments for a tool can be retrieved, sorted by creation date.
+
+<br>
+The second part of the tests covers the following scenarios:
+
+- **Retrieve a specific comment by ID**:  
+  Ensures that a specific comment can be retrieved by its ID to verify it's correctly returned.
+
+- **Delete a comment as the owner**:  
+  Ensures that the comment owner can successfully delete their own comment.
+
+- **Delete a comment as a non-owner**:  
+  Confirms that non-owners cannot delete comments made by other users.
+
+</details>
 
 **Learning from automated testing**
 The automated test for this project were mostly written towards the end of the project. When writing the tests, some minor issues came up, like an authentication issue for deleting comments.<br>
