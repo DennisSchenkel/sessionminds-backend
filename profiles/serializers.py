@@ -9,6 +9,19 @@ from .models import Profile
 
 # Profile serializer
 class ProfileSerializer(serializers.ModelSerializer):
+    """
+    Serializer for the Profile model.
+
+    Args:
+        serializers.ModelSerializer: The base serializer class.
+
+    Raises:
+        serializers.ValidationError: If the image file is too large, too small,
+        not a valid image format, or not a valid image file.
+
+    Returns:
+        ProfileSerializer: The serialized Profile object.
+    """
     user = serializers.ReadOnlyField(source="user.username")
     is_owner = serializers.SerializerMethodField()
 
