@@ -3,12 +3,12 @@ from comments import views
 
 urlpatterns = [
     path(
-        "tool/<int:id>/",
+        "comments/tool/<int:id>/",
         views.ToolComments.as_view(),
         name="tool-comments"
         ),
     path(
-        "<int:id>/",
+        "comments/<int:id>/",
         views.CommentDetails.as_view(),
         name="comment-details"
         ),
