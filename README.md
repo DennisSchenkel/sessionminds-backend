@@ -4,7 +4,7 @@
 
 Code Institute - Portfolio Project 5 - Advanced Frontend with React<br>
 
-[The full instruction can be found in the frontend documentation](https://github.com/DennisSchenkel/sessionminds-frontend?tab=readme-ov-file#introduction)
+[The full intriduction can be found in the frontend documentation](https://github.com/DennisSchenkel/sessionminds-frontend?tab=readme-ov-file#introduction)
 
 This documentation covers the backend and API build with Django and Django Rest Framework.<br>
 
