@@ -221,7 +221,7 @@ The database for this project was deployed with the help of the [Code Institute 
 <summary>User</summary>
 <br>
 The default user model from Django is used for user authentication and the profiles associated with each user.<br>
-The login method was changed from using the username to using the user's email address as the username.
+The login method was changed from using the username to using the user's email address as the username.<br>
 <br>
 </details>
 
@@ -231,33 +231,33 @@ The login method was changed from using the username to using the user's email a
 
 The Profile model stores a user's profile info, with some optional fields for personal and social details. Here's a short overview of the main fields:
 
-**First Name** (optional): Needed for commenting.
-**Last Name** (optional): Needed for commenting.
-**Profile Description** (optional): A short bio (up to 500 characters).
-**Job Title** (optional): User’s job or position.
-**Image** (optional, default provided): Profile picture, checked for size, dimensions, and format (JPEG/PNG).
-**LinkedIn/Facebook/Instagram/Twitter URLs** (optional): Social media links.
-**User** (set automatically): Connects the profile to the user account.
-**Tool Count** (auto-set): Counts how many tools the user created.
-**Total Votes** (auto-set): Counts how many votes the user's tools have received.
-**Slug** (auto-set): A unique, URL-friendly identifier.
-**Created/Updated** (auto-set): Timestamps for when the profile was created and last updated.
+**First Name** (optional): Needed for commenting.<br>
+**Last Name** (optional): Needed for commenting.<br>
+**Profile Description** (optional): A short bio (up to 500 characters).<br>
+**Job Title** (optional): User’s job or position.<br>
+**Image** (optional, default provided): Profile picture, checked for size, dimensions, and format (JPEG/PNG).<br>
+**LinkedIn/Facebook/Instagram/Twitter URLs** (optional): Social media links.<br>
+**User** (set automatically): Connects the profile to the user account.<br>
+**Tool Count** (auto-set): Counts how many tools the user created.<br>
+**Total Votes** (auto-set): Counts how many votes the user's tools have received.<br>
+**Slug** (auto-set): A unique, URL-friendly identifier.<br>
+**Created/Updated** (auto-set): Timestamps for when the profile was created and last updated.<br>
 
-**Serializer Overview**
-**ProfileSerializer**: Handles serializing and validating profile data, with custom methods for checking ownership and validating image uploads.
-**UserSerializer**: Handles user data, including email, username, and password updates.
-**RegistrationSerializer**: Handles new user registration, ensuring unique emails and matching passwords.
-**LoginSerializer**: Manages user login, checking email and password for authentication.
+**Serializer Overview**<br>
+**ProfileSerializer**: Handles serializing and validating profile data, with custom methods for checking ownership and validating image uploads.<br>
+**UserSerializer**: Handles user data, including email, username, and password updates.<br>
+**RegistrationSerializer**: Handles new user registration, ensuring unique emails and matching passwords.<br>
+**LoginSerializer**: Manages user login, checking email and password for authentication.<br>
 
-**Profile Views**
-**ProfileList**: Retrieves a list of profiles, ordered by tool count or total votes.
-**ProfileDetail**: Retrieves, updates, or deletes a profile by profile ID.
-**UserProfileView**: Retrieves or updates a profile by user ID.
-**UserProfileViewSlug**: Retrieves a profile by its slug.
-**UsersListView**: Retrieves a list of all users.
-**UserDetailView**: Retrieves a specific user by user ID.
-**UserUpdateView**: Updates a user account by user ID.
-**UserDeleteView**: Deletes a user account by user ID.
+**Profile Views**<br>
+**ProfileList**: Retrieves a list of profiles, ordered by tool count or total votes.<br>
+**ProfileDetail**: Retrieves, updates, or deletes a profile by profile ID.<br>
+**UserProfileView**: Retrieves or updates a profile by user ID.<br>
+**UserProfileViewSlug**: Retrieves a profile by its slug.<br>
+**UsersListView**: Retrieves a list of all users.<br>
+**UserDetailView**: Retrieves a specific user by user ID.<br>
+**UserUpdateView**: Updates a user account by user ID.<br>
+**UserDeleteView**: Deletes a user account by user ID.<br>
 
 These views help manage user profiles, including updating, retrieving, and deleting profile and user data, while keeping permissions and ownership in place.
 <br>
@@ -270,23 +270,23 @@ These views help manage user profiles, including updating, retrieving, and delet
 
 The Tool model represents a resource created by users, and here are the main fields:
 
-**Title** (required): A unique name for the tool (up to 100 characters).
-**Short Description** (required): A brief summary of the tool (up to 50 characters).
-**Full Description** (required): A detailed description (up to 500 characters).
-**Topic** (optional): Links the tool to a topic (default if not set).
-**Instructions** (required): How to use the tool (up to 5000 characters).
-**Icon** (required): The tool's icon code (default "26aa").
-**Slug** (auto-set): A unique, URL-friendly identifier for the tool.
-**User** (set automatically): The creator of the tool.
-**Created/Updated** (auto-set): Timestamps for when the tool was created and last updated.
+**Title** (required): A unique name for the tool (up to 100 characters).<br>
+**Short Description** (required): A brief summary of the tool (up to 50 characters).<br>
+**Full Description** (required): A detailed description (up to 500 characters).<br>
+**Topic** (optional): Links the tool to a topic (default if not set).<br>
+**Instructions** (required): How to use the tool (up to 5000 characters).<br>
+**Icon** (required): The tool's icon code (default "26aa").<br>
+**Slug** (auto-set): A unique, URL-friendly identifier for the tool.<br>
+**User** (set automatically): The creator of the tool.<br>
+**Created/Updated** (auto-set): Timestamps for when the tool was created and last updated.<br>
 
-**Serializer Overview**
-**ToolSerializer**: Handles serializing and validating tools, including fields like is_owner, user, profile, comments, and vote_count. It manages topic_id for setting the tool's topic and includes read-only topic details.
+**Serializer Overview**<br>
+**ToolSerializer**: Handles serializing and validating tools, including fields like is_owner, user, profile, comments, and vote_count. It manages topic_id for setting the tool's topic and includes read-only topic details.<br>
 
-**Tool Views**
-**ToolList**: Retrieves all tools, with options to search and order by votes or date, and allows new tools to be created.
-**ToolListByUser**: Retrieves all tools made by a certain user.
-**ToolDetailById/Slug**: Retrieves, updates, or deletes a tool by its ID or slug.
+**Tool Views**<br>
+**ToolList**: Retrieves all tools, with options to search and order by votes or date, and allows new tools to be created.<br>
+**ToolListByUser**: Retrieves all tools made by a certain user.<br>
+**ToolDetailById/Slug**: Retrieves, updates, or deletes a tool by its ID or slug.<br>
 
 These views help with tool management, checking ownership, permissions, and supporting pagination.
 <br>
@@ -297,35 +297,35 @@ These views help with tool management, checking ownership, permissions, and supp
 <summary>Topics & Icons</summary>
 <br>
 
-The Topic and Icon models are for categorizing tools and giving them visual icons. Here’s an overview:
+The Topic and Icon models are for categorizing tools and giving these categories(topics) visual icons. Here’s an overview:
 
 **Topic Model**
 
 The Topic model categorizes tools. It includes the following fields:
 
-**Title** (required): A unique title for the topic (up to 100 characters).
-**Description** (optional): A short description (up to 50 characters).
-**Icon** (optional): A foreign key to an icon that visually represents the topic.
-**Slug** (auto-set): A unique, URL-friendly identifier created from the title.
-**Created** (auto-set): Timestamp for when the topic was created.
-**Updated** (auto-set): Timestamp for when the topic was updated.
+**Title** (required): A unique title for the topic (up to 100 characters).<br>
+**Description** (optional): A short description (up to 50 characters).<br>
+**Icon** (optional): A foreign key to an icon for the topic.<br>
+**Slug** (auto-set): A unique, URL-friendly identifier created from the title.<br>
+**Created** (auto-set): Timestamp for when the topic was created.<br>
+**Updated** (auto-set): Timestamp for when the topic was updated.<br>
 
 **Icon Model**
 
 The Icon model represents icons that can be assigned to topics. Key fields include:
 
-**Title** (required): A unique name for the icon (up to 100 characters).
-**Icon Code** (required): A unique code for the icon (up to 10 characters).
+**Title** (required): A unique name for the icon (up to 100 characters).<br>
+**Icon Code** (required): A unique code for the icon (up to 10 characters).<br>
 
-**Serializer Overview**
-**TopicSerializer**: Serializes and deserializes topic data, including the icon and a tool_count field that shows how many tools are in the topic.
-**IconSerializer**: Serializes icon info, including title and icon_code.
+**Serializer Overview**<br>
+**TopicSerializer**: Serializes and deserializes topic data, including the icon and a tool_count field that shows how many tools are in the topic.<br>
+**IconSerializer**: Serializes icon info, including title and icon_code.<br>
 
-**Topic & Icon Views**
-**TopicsList**: Retrieves a list of topics, ordered by tool count or alphabetically, with pagination.
-**TopicDetailsBySlug**: Retrieves a specific topic by its slug.
-**TopicDetailsById**: Retrieves a topic by its ID, including the tool count.
-**ToolsOfTopicBySlug**: Retrieves all tools in a topic, ordered by votes or creation date, with pagination.
+**Topic & Icon Views**<br>
+**TopicsList**: Retrieves a list of topics, ordered by tool count or alphabetically, with pagination.<br>
+**TopicDetailsBySlug**: Retrieves a specific topic by its slug.<br>
+**TopicDetailsById**: Retrieves a topic by its ID, including the tool count.<br>
+**ToolsOfTopicBySlug**: Retrieves all tools in a topic, ordered by votes or creation date, with pagination.<br>
 
 These views help manage topics and tools, and the icons visually identify topics.
 <br>
@@ -338,26 +338,26 @@ These views help manage topics and tools, and the icons visually identify topics
 
 The Vote model tracks user votes on tools, ensuring that each user can only vote once for a tool. Key fields include:
 
-**User** (required): A foreign key linking the vote to the user who voted.
-**Tool** (required): A foreign key linking the vote to the tool being voted on.
-**Created** (auto-set): Timestamp when the vote was made.
+**User** (required): A foreign key linking the vote to the user who voted.<br>
+**Tool** (required): A foreign key linking the vote to the tool being voted on.<br>
+**Created** (auto-set): Timestamp when the vote was made.<br>
 
-**Meta Options**
-**unique_together**: Ensures a user can vote only once per tool.
-**ordering**: Orders votes by creation date, newest first.
+**Meta Options**<br>
+**unique_together**: Ensures a user can vote only once per tool.<br>
+**ordering**: Orders votes by creation date, newest first.<br>
 
-**Serializer Overview**
-**VoteSerializer**: Serializes vote data and ensures users can't vote more than once on the same tool. It includes:
+**Serializer Overview**<br>
+**VoteSerializer**: Serializes vote data and ensures users can't vote more than once on the same tool. It includes:<br>
 
 - user: A read-only field showing the username of the vote's owner.
 - is_owner: A field that checks if the current user owns the vote.
 
 If a user tries to vote more than once on the same tool, an error is raised.
 
-**Vote Views**
-**VoteList**: Retrieves all votes and supports creating new votes, with the current user set as the vote owner.
-**VoteDetails**: Retrieves or deletes a vote by ID. Only the vote owner can delete it.
-**VotesByTool**: Checks if the current user has voted for a tool, and returns the vote's ID if they have.
+**Vote Views**<br>
+**VoteList**: Retrieves all votes and supports creating new votes, with the current user set as the vote owner.<br>
+**VoteDetails**: Retrieves or deletes a vote by ID. Only the vote owner can delete it.<br>
+**VotesByTool**: Checks if the current user has voted for a tool, and returns the vote's ID if they have.<br>
 
 These views manage tool voting, ensuring users can't vote more than once while allowing them to check their vote status.
 <br>
@@ -370,22 +370,22 @@ These views manage tool voting, ensuring users can't vote more than once while a
 
 The Comment model tracks comments made by users on tools. Each comment links to a tool and a user. The main fields are:
 
-**Text** (required): The comment's content.
-**Tool** (required): A foreign key linking the comment to a tool. Deleting the tool also deletes its comments.
-**User** (required): A foreign key linking the comment to the user who made it.
-**Created** (auto-set): Timestamp for when the comment was created.
-**Updated** (auto-set): Timestamp for the last time the comment was updated.
+**Text** (required): The comment's content.<br>
+**Tool** (required): A foreign key linking the comment to a tool. Deleting the tool also deletes its comments.<br>
+**User** (required): A foreign key linking the comment to the user who made it.<br>
+**Created** (auto-set): Timestamp for when the comment was created.<br>
+**Updated** (auto-set): Timestamp for the last time the comment was updated.<br>
 
-**Serializer Overview**
-**CommentSerializer**: Serializes comment data, including a profile field that provides detailed profile info about the comment's author.
+**Serializer Overview**<br>
+**CommentSerializer**: Serializes comment data, including a profile field that provides detailed profile info about the comment's author.<br>
 
-**Comment Views**
-**ToolComments**: Retrieves all comments for a tool or lets authenticated users create new comments.
+**Comment Views**<br>
+**ToolComments**: Retrieves all comments for a tool or lets authenticated users create new comments.<br>
 
-- **GET**: Returns comments for a tool, ordered by creation date.
-- **POST**: Lets authenticated users post comments, but they need both a first and last name in their profile.
+- **GET**: Returns comments for a tool, ordered by creation date.<br>
+- **POST**: Lets authenticated users post comments, but they need both a first and last name in their profile.<br>
 
-**CommentDetails**: Retrieves, updates, or deletes a comment by ID. Only the comment's owner can update or delete it.
+**CommentDetails**: Retrieves, updates, or deletes a comment by ID. Only the comment's owner can update or delete it.<br>
 
 - **GET**: Returns the details of a specific comment.
 - **DELETE**: Deletes the comment if the user owns it.
