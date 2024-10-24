@@ -66,7 +66,7 @@ During the development of this application, the following programs and tools hav
 - [CI Postgres Database](https://dbs.ci-dbs.net/) (Used for database hosting)
 - [Cloudinary](https://cloudinary.com/) (As external hosting services for images)
 - [dbdiagram.io](https://dbdiagram.io/) (Creating database visualization)
-- [DBeaver](https://dbeaver.io/) (For database inspection and manipulation)
+- [DBeaver](https://dbeaver.io/) (For database inspection, manipulation and ERD)
 - [Git](https://git-scm.com/) (Version control)
 - [GitHub](https://github.com/) (Used as cloud repository)
 - [Google Chrome Dev Tools](https://developer.chrome.com/) (Working with console and HTML output)
@@ -215,27 +215,214 @@ The database for this project was deployed with the help of the [Code Institute 
 
 ### Database
 
-Models
+**Models**
 
-**Profiles**
+<details>
+<summary>User</summary>
+<br>
+The default user model from Django is used for user authentication and the profiles associated with each user.<br>
+The login method was changed from using the username to using the user's email address as the username.
+<br>
+</details>
 
-**Tools**
+<details>
+<summary>Profiles</summary>
+<br>
 
-**Topics**
+The Profile model stores a user's profile info, with some optional fields for personal and social details. Here's a short overview of the main fields:
 
-**Icons**
+**First Name** (optional): Needed for commenting.
+**Last Name** (optional): Needed for commenting.
+**Profile Description** (optional): A short bio (up to 500 characters).
+**Job Title** (optional): User’s job or position.
+**Image** (optional, default provided): Profile picture, checked for size, dimensions, and format (JPEG/PNG).
+**LinkedIn/Facebook/Instagram/Twitter URLs** (optional): Social media links.
+**User** (set automatically): Connects the profile to the user account.
+**Tool Count** (auto-set): Counts how many tools the user created.
+**Total Votes** (auto-set): Counts how many votes the user's tools have received.
+**Slug** (auto-set): A unique, URL-friendly identifier.
+**Created/Updated** (auto-set): Timestamps for when the profile was created and last updated.
 
-**Votes**
+**Serializer Overview**
+**ProfileSerializer**: Handles serializing and validating profile data, with custom methods for checking ownership and validating image uploads.
+**UserSerializer**: Handles user data, including email, username, and password updates.
+**RegistrationSerializer**: Handles new user registration, ensuring unique emails and matching passwords.
+**LoginSerializer**: Manages user login, checking email and password for authentication.
 
-**Comments**
+**Profile Views**
+**ProfileList**: Retrieves a list of profiles, ordered by tool count or total votes.
+**ProfileDetail**: Retrieves, updates, or deletes a profile by profile ID.
+**UserProfileView**: Retrieves or updates a profile by user ID.
+**UserProfileViewSlug**: Retrieves a profile by its slug.
+**UsersListView**: Retrieves a list of all users.
+**UserDetailView**: Retrieves a specific user by user ID.
+**UserUpdateView**: Updates a user account by user ID.
+**UserDeleteView**: Deletes a user account by user ID.
 
-**Blacklistet Tokens**
+These views help manage user profiles, including updating, retrieving, and deleting profile and user data, while keeping permissions and ownership in place.
+<br>
+
+</details>
+
+<details>
+<summary>Tools</summary>
+<br>
+
+The Tool model represents a resource created by users, and here are the main fields:
+
+**Title** (required): A unique name for the tool (up to 100 characters).
+**Short Description** (required): A brief summary of the tool (up to 50 characters).
+**Full Description** (required): A detailed description (up to 500 characters).
+**Topic** (optional): Links the tool to a topic (default if not set).
+**Instructions** (required): How to use the tool (up to 5000 characters).
+**Icon** (required): The tool's icon code (default "26aa").
+**Slug** (auto-set): A unique, URL-friendly identifier for the tool.
+**User** (set automatically): The creator of the tool.
+**Created/Updated** (auto-set): Timestamps for when the tool was created and last updated.
+
+**Serializer Overview**
+**ToolSerializer**: Handles serializing and validating tools, including fields like is_owner, user, profile, comments, and vote_count. It manages topic_id for setting the tool's topic and includes read-only topic details.
+
+**Tool Views**
+**ToolList**: Retrieves all tools, with options to search and order by votes or date, and allows new tools to be created.
+**ToolListByUser**: Retrieves all tools made by a certain user.
+**ToolDetailById/Slug**: Retrieves, updates, or deletes a tool by its ID or slug.
+
+These views help with tool management, checking ownership, permissions, and supporting pagination.
+<br>
+
+</details>
+
+<details>
+<summary>Topics & Icons</summary>
+<br>
+
+The Topic and Icon models are for categorizing tools and giving them visual icons. Here’s an overview:
+
+**Topic Model**
+
+The Topic model categorizes tools. It includes the following fields:
+
+**Title** (required): A unique title for the topic (up to 100 characters).
+**Description** (optional): A short description (up to 50 characters).
+**Icon** (optional): A foreign key to an icon that visually represents the topic.
+**Slug** (auto-set): A unique, URL-friendly identifier created from the title.
+**Created** (auto-set): Timestamp for when the topic was created.
+**Updated** (auto-set): Timestamp for when the topic was updated.
+
+**Icon Model**
+
+The Icon model represents icons that can be assigned to topics. Key fields include:
+
+**Title** (required): A unique name for the icon (up to 100 characters).
+**Icon Code** (required): A unique code for the icon (up to 10 characters).
+
+**Serializer Overview**
+**TopicSerializer**: Serializes and deserializes topic data, including the icon and a tool_count field that shows how many tools are in the topic.
+**IconSerializer**: Serializes icon info, including title and icon_code.
+
+**Topic & Icon Views**
+**TopicsList**: Retrieves a list of topics, ordered by tool count or alphabetically, with pagination.
+**TopicDetailsBySlug**: Retrieves a specific topic by its slug.
+**TopicDetailsById**: Retrieves a topic by its ID, including the tool count.
+**ToolsOfTopicBySlug**: Retrieves all tools in a topic, ordered by votes or creation date, with pagination.
+
+These views help manage topics and tools, and the icons visually identify topics.
+<br>
+
+</details>
+
+<details>
+<summary>Votes</summary>
+<br>
+
+The Vote model tracks user votes on tools, ensuring that each user can only vote once for a tool. Key fields include:
+
+**User** (required): A foreign key linking the vote to the user who voted.
+**Tool** (required): A foreign key linking the vote to the tool being voted on.
+**Created** (auto-set): Timestamp when the vote was made.
+
+**Meta Options**
+**unique_together**: Ensures a user can vote only once per tool.
+**ordering**: Orders votes by creation date, newest first.
+
+**Serializer Overview**
+**VoteSerializer**: Serializes vote data and ensures users can't vote more than once on the same tool. It includes:
+
+- user: A read-only field showing the username of the vote's owner.
+- is_owner: A field that checks if the current user owns the vote.
+
+If a user tries to vote more than once on the same tool, an error is raised.
+
+**Vote Views**
+**VoteList**: Retrieves all votes and supports creating new votes, with the current user set as the vote owner.
+**VoteDetails**: Retrieves or deletes a vote by ID. Only the vote owner can delete it.
+**VotesByTool**: Checks if the current user has voted for a tool, and returns the vote's ID if they have.
+
+These views manage tool voting, ensuring users can't vote more than once while allowing them to check their vote status.
+<br>
+
+</details>
+
+<details>
+<summary>Comments</summary>
+<br>
+
+The Comment model tracks comments made by users on tools. Each comment links to a tool and a user. The main fields are:
+
+**Text** (required): The comment's content.
+**Tool** (required): A foreign key linking the comment to a tool. Deleting the tool also deletes its comments.
+**User** (required): A foreign key linking the comment to the user who made it.
+**Created** (auto-set): Timestamp for when the comment was created.
+**Updated** (auto-set): Timestamp for the last time the comment was updated.
+
+**Serializer Overview**
+**CommentSerializer**: Serializes comment data, including a profile field that provides detailed profile info about the comment's author.
+
+**Comment Views**
+**ToolComments**: Retrieves all comments for a tool or lets authenticated users create new comments.
+
+- **GET**: Returns comments for a tool, ordered by creation date.
+- **POST**: Lets authenticated users post comments, but they need both a first and last name in their profile.
+
+**CommentDetails**: Retrieves, updates, or deletes a comment by ID. Only the comment's owner can update or delete it.
+
+- **GET**: Returns the details of a specific comment.
+- **DELETE**: Deletes the comment if the user owns it.
+
+These views manage comments on tools, allowing users to comment, retrieve, or delete their comments while ensuring permissions are enforced.
+<br>
+
+</details>
+<br>
+
+The following database diagram was created using DBeaver.
+
+![Sessionminds ER Diagram](/documentation/images/sessionminds-ERD.png)
 
 ### Testing
 
 #### Validator Testing
 
 #### Automated Testing
+
+For this backend/API project were 33 written and passed successfully.
+
+- Authentication(Profile)
+
+- Tools
+
+- Topics
+
+- Votes
+
+- Comments
+
+![Django Automated Testing](/documentation/images/django-automated-testing.png)
+
+**Learning from automated testing**
+The automated test for this project were mostly written towards the end of the project. When writing the tests, some minor issues came up, like an authentication issue for deleting comments.<br>
+In future projects, the test will be written directly with the application itself like thought in the CI material, to prevent bigger issues from the ground up.
 
 #### Manuel Testing
 
@@ -295,6 +482,6 @@ In the frontend, the login modal was exchanged with a complete login page that c
 
 ### Acknowledgements
 
-- Thanks to Gareth McGirr for providing great mentorship as part of the Code Academy course.
+- Thanks to Gareth McGirr for providing great mentorship and awesome support as part of the Code Academy course.
 - Thanks to Kay for they effort as a facilitator of the Code Institute team.
 - Great thanks go to [Dajana Isbaner](https://github.com/queenisabaer) for being the best fellow student I could wish for.
