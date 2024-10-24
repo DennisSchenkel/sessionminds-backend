@@ -21,6 +21,7 @@ Code Institute - Portfolio Project 5 - Advanced Frontend with React<br>
 - [Use Case](#use-case)
 - [User Experience](#user-experience)
 - [Agile Project Management](#agile-project-management)
+- [API Endpoints](#api-entpoints)
 - [Development](#development)
   - [Technologies Used](#technologies-used)
     - [Languages](#languages)
@@ -37,7 +38,6 @@ Code Institute - Portfolio Project 5 - Advanced Frontend with React<br>
     - [Validator Testing](#validator-testing)
     - [Automated Testing](#automated-testing)
     - [Manual API Testing](#manual-api-testing)
-    - [Possible Improvements](#possible-improvements)
     - [Issues During Development](#issues-during-development)
     - [Known Unfixed Bugs](#known-unfixed-bugs)
 - [Credits](#credits)
@@ -55,6 +55,90 @@ Code Institute - Portfolio Project 5 - Advanced Frontend with React<br>
 ## Agile Project Management
 
 [This paragraph can be found in the frontend documentation](https://github.com/DennisSchenkel/sessionminds-frontend?tab=readme-ov-file#agile-project-management)
+
+## API Entpoints
+
+This application offers the following API endpoints with the displayed CRUD functionality.
+
+<details>
+<summary>Authentication / Profiles</summary>
+<br>
+
+| **API Endpoint**           | **Method** | **CRUD Functionality**                             |
+| -------------------------- | ---------- | -------------------------------------------------- |
+| `/users/`                  | GET        | Read (Retrieve a list of users)                    |
+| `/users/<int:id>/`         | GET        | Read (Retrieve a specific user by ID)              |
+| `/users/<int:id>/profile/` | GET        | Read (Retrieve a user's profile by user ID)        |
+| `/users/<int:id>/profile/` | PUT        | Update (Update a user's profile by user ID)        |
+| `/users/<int:id>/delete/`  | DELETE     | Delete (Delete a user account)                     |
+| `/profiles/`               | GET        | Read (Retrieve all profiles)                       |
+| `/profiles/<int:id>/`      | GET        | Read (Retrieve a specific profile by profile ID)   |
+| `/profiles/<int:id>/`      | PUT        | Update (Update a specific profile by profile ID)   |
+| `/profiles/<int:id>/`      | DELETE     | Delete (Delete a specific profile by profile ID)   |
+| `/profiles/<slug:slug>/`   | GET        | Read (Retrieve a profile by slug)                  |
+| `/register/`               | POST       | Create (Register a new user)                       |
+| `/login/`                  | POST       | Create (Login a user and return JWT tokens)        |
+| `/logout/`                 | POST       | Create (Logout a user and blacklist refresh token) |
+| `/protected/`              | GET        | Read (Access a protected endpoint)                 |
+
+</details>
+
+<details>
+<summary>Tools</summary>
+<br>
+
+| **API Endpoint**             | **Method** | **CRUD Functionality**                  |
+| ---------------------------- | ---------- | --------------------------------------- |
+| `/tools/`                    | GET        | Read (Retrieve a list of tools)         |
+| `/tools/`                    | POST       | Create (Create a new tool)              |
+| `/tools/user/<int:user_id>/` | GET        | Read (Retrieve tools by user ID)        |
+| `/tools/<int:id>/`           | GET        | Read (Retrieve a single tool by ID)     |
+| `/tools/<int:id>/`           | PUT        | Update (Update a specific tool by ID)   |
+| `/tools/<int:id>/`           | DELETE     | Delete (Delete a specific tool by ID)   |
+| `/tools/tool/<slug:slug>/`   | GET        | Read (Retrieve a single tool by slug)   |
+| `/tools/tool/<slug:slug>/`   | PUT        | Update (Update a specific tool by slug) |
+| `/tools/tool/<slug:slug>/`   | DELETE     | Delete (Delete a specific tool by slug) |
+
+</details>
+
+<details>
+<summary>Topics</summary>
+<br>
+
+| **API Endpoint**            | **Method** | **CRUD Functionality**                      |
+| --------------------------- | ---------- | ------------------------------------------- |
+| `/topics/`                  | GET        | Read (Retrieve a list of topics)            |
+| `/topics/<slug:slug>/`      | GET        | Read (Retrieve a topic by slug)             |
+| `/topics/list/<slug:slug>/` | GET        | Read (Retrieve tools under a topic by slug) |
+
+</details>
+
+<details>
+<summary>Votes</summary>
+<br>
+
+| **API Endpoint**        | **Method** | **CRUD Functionality**                               |
+| ----------------------- | ---------- | ---------------------------------------------------- |
+| `/votes/`               | GET        | Read (Retrieve a list of votes)                      |
+| `/votes/`               | POST       | Create (Create a new vote)                           |
+| `/votes/<int:pk>/`      | GET        | Read (Retrieve a single vote by ID)                  |
+| `/votes/<int:pk>/`      | DELETE     | Delete (Delete a vote by ID)                         |
+| `/votes/tool/<int:id>/` | GET        | Read (Check if a user has voted for a specific tool) |
+
+</details>
+
+<details>
+<summary>Comments</summary>
+<br>
+
+| **API Endpoint**           | **Method** | **CRUD Functionality**                   |
+| -------------------------- | ---------- | ---------------------------------------- |
+| `/comments/tool/<int:id>/` | GET        | Read (Retrieve all comments for a tool)  |
+| `/comments/tool/<int:id>/` | POST       | Create (Create a new comment for a tool) |
+| `/comments/<int:id>/`      | GET        | Read (Retrieve a single comment by ID)   |
+| `/comments/<int:id>/`      | DELETE     | Delete (Delete a comment by ID)          |
+
+</details>
 
 ## Development
 
@@ -635,7 +719,100 @@ In future projects, the test will be written directly with the application itsel
 
 #### Manuel API Testing
 
-#### Possible Improvements
+The following API endpoints have been tested by using a browser or Postman for POST, PUT, DELETE.
+
+<details>
+<summary>Sessionminds</summary>
+<br>
+
+| **API Endpoint**      | **Method** | **CRUD Functionality**           | **Test** |
+| --------------------- | ---------- | -------------------------------- | -------- |
+| `/admin/`             | GET        | Admin interface                  | pass     |
+| `/api/token/verify/`  | POST       | Verify JWT tokens                | pass     |
+| `/api/token/refresh/` | POST       | Refresh JWT tokens               | pass     |
+| `/`                   | GET        | Display API root welcome message | pass     |
+
+</details>
+
+<details>
+<summary>Authentication / Profiles</summary>
+<br>
+
+| **API Endpoint**           | **Method** | **CRUD Functionality**                             | **Test** |
+| -------------------------- | ---------- | -------------------------------------------------- | -------- |
+| `/users/`                  | GET        | Read (Retrieve a list of users)                    | pass     |
+| `/users/<int:id>/`         | GET        | Read (Retrieve a specific user by ID)              | pass     |
+| `/users/<int:id>/profile/` | GET        | Read (Retrieve a user's profile by user ID)        | pass     |
+| `/users/<int:id>/profile/` | PUT        | Update (Update a user's profile by user ID)        | pass     |
+| `/users/<int:id>/delete/`  | DELETE     | Delete (Delete a user account)                     | pass     |
+| `/profiles/`               | GET        | Read (Retrieve all profiles)                       | pass     |
+| `/profiles/<int:id>/`      | GET        | Read (Retrieve a specific profile by profile ID)   | pass     |
+| `/profiles/<int:id>/`      | PUT        | Update (Update a specific profile by profile ID)   | pass     |
+| `/profiles/<int:id>/`      | DELETE     | Delete (Delete a specific profile by profile ID)   | pass     |
+| `/profiles/<slug:slug>/`   | GET        | Read (Retrieve a profile by slug)                  | pass     |
+| `/register/`               | POST       | Create (Register a new user)                       | pass     |
+| `/login/`                  | POST       | Create (Login a user and return JWT tokens)        | pass     |
+| `/logout/`                 | POST       | Create (Logout a user and blacklist refresh token) | pass     |
+| `/protected/`              | GET        | Read (Access a protected endpoint)                 | pass     |
+
+</details>
+
+<details>
+<summary>Tools</summary>
+<br>
+
+| **API Endpoint**             | **Method** | **CRUD Functionality**                  | **Test** |
+| ---------------------------- | ---------- | --------------------------------------- | -------- |
+| `/tools/`                    | GET        | Read (Retrieve a list of tools)         | pass     |
+| `/tools/`                    | POST       | Create (Create a new tool)              | pass     |
+| `/tools/user/<int:user_id>/` | GET        | Read (Retrieve tools by user ID)        | pass     |
+| `/tools/<int:id>/`           | GET        | Read (Retrieve a single tool by ID)     | pass     |
+| `/tools/<int:id>/`           | PUT        | Update (Update a specific tool by ID)   | pass     |
+| `/tools/<int:id>/`           | DELETE     | Delete (Delete a specific tool by ID)   | pass     |
+| `/tools/tool/<slug:slug>/`   | GET        | Read (Retrieve a single tool by slug)   | pass     |
+| `/tools/tool/<slug:slug>/`   | PUT        | Update (Update a specific tool by slug) | pass     |
+| `/tools/tool/<slug:slug>/`   | DELETE     | Delete (Delete a specific tool by slug) | pass     |
+
+</details>
+
+<details>
+<summary>Topics</summary>
+<br>
+
+| **API Endpoint**            | **Method** | **CRUD Functionality**                      | **Test** |
+| --------------------------- | ---------- | ------------------------------------------- | -------- |
+| `/topics/`                  | GET        | Read (Retrieve a list of topics)            | pass     |
+| `/topics/<slug:slug>/`      | GET        | Read (Retrieve a topic by slug)             | pass     |
+| `/topics/list/<slug:slug>/` | GET        | Read (Retrieve tools under a topic by slug) | pass     |
+
+</details>
+
+<details>
+<summary>Votes</summary>
+<br>
+
+| **API Endpoint**        | **Method** | **CRUD Functionality**                               | **Test** |
+| ----------------------- | ---------- | ---------------------------------------------------- | -------- |
+| `/votes/`               | GET        | Read (Retrieve a list of votes)                      | pass     |
+| `/votes/`               | POST       | Create (Create a new vote)                           | pass     |
+| `/votes/<int:pk>/`      | GET        | Read (Retrieve a single vote by ID)                  | pass     |
+| `/votes/<int:pk>/`      | DELETE     | Delete (Delete a vote by ID)                         | pass     |
+| `/votes/tool/<int:id>/` | GET        | Read (Check if a user has voted for a specific tool) | pass     |
+
+</details>
+
+<details>
+<summary>Comments</summary>
+<br>
+
+| **API Endpoint**           | **Method** | **CRUD Functionality**                   | **Test** |
+| -------------------------- | ---------- | ---------------------------------------- | -------- |
+| `/comments/tool/<int:id>/` | GET        | Read (Retrieve all comments for a tool)  | pass     |
+| `/comments/tool/<int:id>/` | POST       | Create (Create a new comment for a tool) | pass     |
+| `/comments/<int:id>/`      | GET        | Read (Retrieve a single comment by ID)   | pass     |
+| `/comments/<int:id>/`      | DELETE     | Delete (Delete a comment by ID)          | pass     |
+
+</details>
 
 #### Issues During Development
 
@@ -680,6 +857,8 @@ In the backend, the login view was updated and an error response for wrong login
 In the frontend, the login modal was exchanged with a complete login page that can not close like a modal, when the form is submitted. Due to not closing the modal with the form, the newly created backend response was used for showing the expected error message.<br>
 
 #### Known Unfixed Bugs
+
+No bugs are know at the time of submission.
 
 ## Credits
 
