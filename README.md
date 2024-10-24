@@ -1,14 +1,14 @@
 # Session Minds Backend API Documentation
 
-This documentation covers the backend and API build with Django and Django Rest Framework.<br>
-
-[Documentation for the Frontend can be found here!](https://github.com/DennisSchenkel/sessionminds-frontend)
-
 ## Introduction
 
 Code Institute - Portfolio Project 5 - Advanced Frontend with React<br>
 
-[This paragraph can be found in the frontend documentation](https://github.com/DennisSchenkel/sessionminds-frontend?tab=readme-ov-file#introduction)
+[The full instruction can be found in the frontend documentation](https://github.com/DennisSchenkel/sessionminds-frontend?tab=readme-ov-file#introduction)
+
+This documentation covers the backend and API build with Django and Django Rest Framework.<br>
+
+[Documentation for the Frontend can be found here!](https://github.com/DennisSchenkel/sessionminds-frontend)
 
 [The deployed API can be found here!](https://sessionminds-be-f5283499a47c.herokuapp.com/)
 
@@ -144,31 +144,15 @@ This application offers the following API endpoints with the displayed CRUD func
 
 ### Technologies Used
 
-During the development of this application, the following programs and tools have been used.<br>
-<br>
-
-- [CI Postgres Database](https://dbs.ci-dbs.net/) (Used for database hosting)
-- [Cloudinary](https://cloudinary.com/) (As external hosting services for images)
-- [dbdiagram.io](https://dbdiagram.io/) (Creating database visualization)
-- [DBeaver](https://dbeaver.io/) (For database inspection, manipulation and ERD)
-- [Git](https://git-scm.com/) (Version control)
-- [GitHub](https://github.com/) (Used as cloud repository)
-- [Google Chrome Dev Tools](https://developer.chrome.com/) (Working with console and HTML output)
-- [Heroku](https://www.heroku.com/home) (Deployment of final application)
-- [Postman](https://www.postman.com/) (For API testing)
-- [Visual Studio Code](https://code.visualstudio.com/) (IDE - Integrated Development Environment)
-
 #### Languages
 
 The following languages have been used.<br>
-<br>
 
 - Python
 
 #### Frameworks
 
 The following frameworks have been used.<br>
-<br>
 
 - Django
 - Django Rest Framework
@@ -176,7 +160,6 @@ The following frameworks have been used.<br>
 #### Modules, Libraries & Plugins
 
 The following modules, libraries and plugins have been used.<br>
-<br>
 
 - AllAuth (For user uthentication)
 - Black (Code formatter for Python)
@@ -194,6 +177,19 @@ The following modules, libraries and plugins have been used.<br>
 
 #### Programs & Tools
 
+During the development of this application, the following programs and tools have been used.<br>
+
+- [CI Postgres Database](https://dbs.ci-dbs.net/) (Used for database hosting)
+- [Cloudinary](https://cloudinary.com/) (As external hosting services for images)
+- [dbdiagram.io](https://dbdiagram.io/) (Creating database visualization)
+- [DBeaver](https://dbeaver.io/) (For database inspection, manipulation and ERD)
+- [Git](https://git-scm.com/) (Version control)
+- [GitHub](https://github.com/) (Used as cloud repository)
+- [Google Chrome Dev Tools](https://developer.chrome.com/) (Working with console and HTML output)
+- [Heroku](https://www.heroku.com/home) (Deployment of final application)
+- [Postman](https://www.postman.com/) (For API testing)
+- [Visual Studio Code](https://code.visualstudio.com/) (IDE - Integrated Development Environment)
+
 ### Deployment
 
 #### Version Control
@@ -210,7 +206,6 @@ Git was used for version control by using the following comments:<br>
 #### Cloudinary
 
 For using Cloudinary as a hosting provider for images, the following steps have to be conducted:<br>
-<br>
 
 - Create a Cloudinary account.
 - Login and visit the Cloudinary user account.
@@ -344,7 +339,8 @@ The Profile model stores a user's profile info, with some optional fields for pe
 **UserUpdateView**: Updates a user account by user ID.<br>
 **UserDeleteView**: Deletes a user account by user ID.<br>
 
-These views help manage user profiles, including updating, retrieving, and deleting profile and user data, while keeping permissions and ownership in place.
+These views help manage user profiles, including updating, retrieving, and deleting profile and user data, while keeping permissions and ownership in place.<br>
+<br>
 <br>
 
 </details>
@@ -373,7 +369,7 @@ The Tool model represents a resource created by users, and here are the main fie
 **ToolListByUser**: Retrieves all tools made by a certain user.<br>
 **ToolDetailById/Slug**: Retrieves, updates, or deletes a tool by its ID or slug.<br>
 
-These views help with tool management, checking ownership, permissions, and supporting pagination.
+These views help with tool management, checking ownership, permissions, and supporting pagination.<br>
 <br>
 
 </details>
@@ -414,7 +410,7 @@ The Icon model represents icons that can be assigned to topics. Key fields inclu
 **TopicDetailsById**: Retrieves a topic by its ID, including the tool count.<br>
 **ToolsOfTopicBySlug**: Retrieves all tools in a topic, ordered by votes or creation date, with pagination.<br>
 
-These views help manage topics and tools, and the icons visually identify topics.
+These views help manage topics and tools, and the icons visually identify topics.<br>
 <br>
 
 </details>
@@ -446,7 +442,7 @@ If a user tries to vote more than once on the same tool, an error is raised.
 **VoteDetails**: Retrieves or deletes a vote by ID. Only the vote owner can delete it.<br>
 **VotesByTool**: Checks if the current user has voted for a tool, and returns the vote's ID if they have.<br>
 
-These views manage tool voting, ensuring users can't vote more than once while allowing them to check their vote status.
+These views manage tool voting, ensuring users can't vote more than once while allowing them to check their vote status.<br>
 <br>
 
 </details>
@@ -477,7 +473,7 @@ The Comment model tracks comments made by users on tools. Each comment links to 
 - **GET**: Returns the details of a specific comment.
 - **DELETE**: Deletes the comment if the user owns it.
 
-These views manage comments on tools, allowing users to comment, retrieve, or delete their comments while ensuring permissions are enforced.
+These views manage comments on tools, allowing users to comment, retrieve, or delete their comments while ensuring permissions are enforced.<br>
 <br>
 
 </details>
@@ -502,7 +498,7 @@ No errors were found using the CI Python Linter for the project.
 
 ![CI Python Linter Results - Sessionminds](/documentation/images/sessionminds-linter.png)
 
-<details>
+</details>
 
 <details>
 <summary>Profiles</summary>
@@ -512,7 +508,7 @@ No errors were found using the CI Python Linter for this app.
 
 ![CI Python Linter Results - Profile](/documentation/images/profiles-linter.png)
 
-<details>
+</details>
 
 <details>
 <summary>Tools</summary>
@@ -522,7 +518,7 @@ No errors were found using the CI Python Linter for this app.
 
 ![CI Python Linter Results - Tools](/documentation/images/tools-linter.png)
 
-<details>
+</details>
 
 <details>
 <summary>Topics</summary>
@@ -532,7 +528,7 @@ No errors were found using the CI Python Linter for this app.
 
 ![CI Python Linter Results - Topics](/documentation/images/topics-linter.png)
 
-<details>
+</details>
 
 <details>
 <summary>Votes</summary>
@@ -542,7 +538,7 @@ No errors were found using the CI Python Linter for this app.
 
 ![CI Python Linter Results - Votes](/documentation/images/votes-linter.png)
 
-<details>
+</details>
 
 <details>
 <summary>Comments</summary>
@@ -552,7 +548,7 @@ No errors were found using the CI Python Linter for this app.
 
 ![CI Python Linter Results - Comments](/documentation/images/comments-linter.png)
 
-<details>
+</details>
 
 #### Automated Testing
 
