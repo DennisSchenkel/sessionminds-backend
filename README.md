@@ -814,7 +814,9 @@ The following API endpoints have been tested by using a browser or Postman for P
 
 The following backend related issues came up during development but where solved.
 
-**405 Get method now allowed**
+<details>
+<summary>405 Get method now allowed</summary>
+<br>
 
 Issue:<br>
 When setting up the backend Django Rest Framework and loading the API URLs using a browser, views that only existed for PUT and POST were showing the 405 "Method not allowed" error and stating, that a GET request was made.<br>
@@ -825,7 +827,11 @@ Solution:<br>
 The issue seams to stem from using the Django Rest Framework and creating views for only PUT and POST without a GET method. When opening the API endpoint in a browser, a GET request is automatically conducted and the mentioned error is thrown.<br>
 Since these views are never to be used directly from a browser, this issue is no not of relevance, but that was a lesson to be learned.<br>
 
-**403 HTTP 403 Forbidden**
+</details>
+
+<details>
+<summary>403 HTTP 403 Forbidden</summary>
+<br>
 
 Issue:<br>
 At the beginning of the project the CSRF method for authentication was used and implemented for using the browser view of the Django Rest Framework. Creating, editing and deleting entries was no issue using this approach.
@@ -835,14 +841,23 @@ This leed to the following message showing when trying to update or delete datab
 Solution:<br>
 With implementing JWT in the frontend application and making sure the headers are correct, everything worked just finde.
 
-**Athentication token not deleting**
+</details>
+
+<details>
+<summary>Athentication token not deleting</summary>
+<br>
+
 Issue:<br>
 When testing the behavior of the access and the refresh token, an error occurred, showing that the refresh token was valid after its lifetime.<br>
 
 Solution:<br>
 A function was created that explicitly checks for the lifetime of the refresh token and blacklists it if the lifetime is excited.<br>
 
-**Login with wrong credentials not showing error & not loading next page**
+</details>
+
+<details>
+<summary>Login with wrong credentials not showing error & not loading next page</summary>
+<br>
 
 Issue:<br>
 During the development, a modal was used to show the login form. When entering wrong credentials and pressing enter, the modal closed, and the home page was loaded.<br>
@@ -851,6 +866,8 @@ Although the wrong login credentials were used, no error was retuned by the API 
 Solution:<br>
 In the backend, the login view was updated and an error response for wrong login credentials was added.<br>
 In the frontend, the login modal was exchanged with a complete login page that can not close like a modal, when the form is submitted. Due to not closing the modal with the form, the newly created backend response was used for showing the expected error message.<br>
+
+</details>
 
 #### Known Unfixed Bugs
 
