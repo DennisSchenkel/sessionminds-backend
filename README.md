@@ -1,16 +1,16 @@
 # Session Minds Backend API Documentation
 
-## Introduction
-
-Code Institute - Portfolio Project 5 - Advanced Frontend with React<br>
-
-[The full intriduction can be found in the frontend documentation](https://github.com/DennisSchenkel/sessionminds-frontend?tab=readme-ov-file#introduction)
-
 This documentation covers the backend and API build with Django and Django Rest Framework.<br>
 
 [Documentation for the Frontend can be found here!](https://github.com/DennisSchenkel/sessionminds-frontend)
 
 [The deployed API can be found here!](https://sessionminds-be-f5283499a47c.herokuapp.com/)
+
+## Introduction
+
+Code Institute - Portfolio Project 5 - Advanced Frontend with React<br>
+
+[The full introduction can be found in the frontend documentation](https://github.com/DennisSchenkel/sessionminds-frontend?tab=readme-ov-file#introduction)
 
 <br>
 
@@ -21,7 +21,7 @@ This documentation covers the backend and API build with Django and Django Rest 
 - [Use Case](#use-case)
 - [User Experience](#user-experience)
 - [Agile Project Management](#agile-project-management)
-- [API Endpoints](#api-entpoints)
+- [API Endpoints](#api-endpoints)
 - [Development](#development)
   - [Technologies Used](#technologies-used)
     - [Languages](#languages)
@@ -56,7 +56,7 @@ This documentation covers the backend and API build with Django and Django Rest 
 
 [This paragraph can be found in the frontend documentation](https://github.com/DennisSchenkel/sessionminds-frontend?tab=readme-ov-file#agile-project-management)
 
-## API Entpoints
+## API Endpoints
 
 This application offers the following API endpoints with the displayed CRUD functionality.
 
@@ -161,7 +161,7 @@ The following frameworks have been used.<br>
 
 The following modules, libraries and plugins have been used.<br>
 
-- AllAuth (For user uthentication)
+- AllAuth (For user authentication)
 - Black (Code formatter for Python)
 - Cloudinary (Cloud storage for images)
 - Flake8 (Python linter for formatting conventions)
@@ -233,7 +233,7 @@ The database for this project was deployed with the help of the [Code Institute 
 - Make sure it contains all needed modules and libraries.
 - Modify settings.py
   - Add Heroku to ALLOWED_HOSTS
-  - Add Frontend adress to CORS_ALLOWED_ORIGINS
+  - Add Frontend adsress to CORS_ALLOWED_ORIGINS
   - Set DEBUG to "False"
 - Create Procfile in root directory with the following content: web: gunicorn sessionminds.wsgi --log-file -
 - Use python manage.py collectstatic in the local IDE terminal to collect all static files
@@ -812,7 +812,7 @@ The following API endpoints have been tested by using a browser or Postman for P
 
 #### Issues During Development
 
-The following backend related issues came up during development but where solved.
+The following backend related issues came up during development but were solved.
 
 <details>
 <summary>405 Get method now allowed</summary>
@@ -871,7 +871,7 @@ In the frontend, the login modal was exchanged with a complete login page that c
 
 #### Known Unfixed Bugs
 
-No bugs are know at the time of submission.
+No bugs are known at the time of submission.
 
 ## Credits
 
