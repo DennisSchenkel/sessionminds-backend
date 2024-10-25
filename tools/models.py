@@ -38,7 +38,7 @@ class Tool(models.Model):
         default=1
     )
     instructions = models.TextField(max_length=5000, blank=False)
-    icon = models.CharField(max_length=20, blank=False, default="26aa")
+    icon = models.CharField(max_length=50, blank=False, default="26aa")
     slug = models.SlugField(unique=True, null=True, blank=True)
     user = models.ForeignKey(
         User,
